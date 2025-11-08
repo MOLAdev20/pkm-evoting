@@ -22,7 +22,17 @@ func ConnectDB() {
 
 	// migration
 	var candidate models.Candidate
+	var participant models.Participant
+	var voting models.Voting
 	if err := db.AutoMigrate(&candidate); err != nil {
+		fmt.Println("Migrasi gagal dijalankan:", err)
+	}
+
+	if err := db.AutoMigrate(&participant); err != nil {
+		fmt.Println("Migrasi gagal dijalankan:", err)
+	}
+
+	if err := db.AutoMigrate(&voting); err != nil {
 		fmt.Println("Migrasi gagal dijalankan:", err)
 	}
 

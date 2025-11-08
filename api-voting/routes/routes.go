@@ -2,6 +2,7 @@ package routes
 
 import (
 	"api-voting/handlers"
+	"api-voting/handlers/student"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,10 +10,26 @@ import (
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
 
-	candidates := r.Group("/candidates")
+	candidateRoutes := r.Group("/candidates")
+	{
+		candidateRoutes.GET("/", handlers.GetCandidates)
+		candidateRoutes.POST("/", handlers.InsertCandidate)
+	}
 
-	candidates.GET("/", handlers.GetCandidates)
-	candidates.POST("/", handlers.InsertCandidate)
+	participantRoutes := r.Group("/participant")
+	{
+		participantRoutes.POST("/", handlers.CreateParticipant)
+	}
+
+	votingRoutes := r.Group("/voting")
+	{
+		votingRoutes.POST("/", handlers.InsertVoting)
+	}
+
+	studentRoutes := r.Group("/student")
+	{
+		studentRoutes.POST("/", student.CreateStudent)
+	}
 
 	return r
 }

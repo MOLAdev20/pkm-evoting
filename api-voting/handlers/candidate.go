@@ -8,12 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetCandidates(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"message": "List of candidates",
-	})
-}
-
 func InsertCandidate(c *gin.Context) {
 	var candidate models.Candidate
 
@@ -30,4 +24,26 @@ func InsertCandidate(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Candidate inserted successfully",
 	})
+}
+
+func GetAllCandidate(ctx *gin.Context) {
+	var candidate []models.Candidate
+
+	result := utility.DB.Find(&candidate)
+
+	if result.Error != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"success": false,
+			"message": "Internal server error",
+			"detail":  result.Error.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"success":    true,
+		"message":    "Data fetched successfully",
+		"candidates": candidate,
+	})
+
 }

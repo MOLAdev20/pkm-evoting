@@ -11,5 +11,5 @@ type Candidate struct {
 	Vision      string    `json:"vision"`
 	Mission     string    `json:"mission"`
 	CreatedAt   time.Time `json:"created_at" gorm:"default:current_timestamp"`
-	Votings     []Voting  `json:"votings"`
+	Votings     []Voting  `json:"voters"`
 }

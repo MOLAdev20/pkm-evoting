@@ -37,3 +37,22 @@ func CreateParticipant(ctx *gin.Context) {
 	})
 
 }
+
+func GetAllParticipants(ctx *gin.Context) {
+	var participants []models.Participant
+
+	if err := utility.DB.Find(&participants).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"success": false,
+			"message": "Internal server error",
+			"detail":  err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "success get data",
+		"data":    participants,
+	})
+}

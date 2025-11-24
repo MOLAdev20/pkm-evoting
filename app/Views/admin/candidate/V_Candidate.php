@@ -103,60 +103,40 @@
                 <table class="min-w-full text-sm">
                     <thead>
                         <tr class="border-b border-gray-200 bg-gray-50">
-                            <th class="px-3 py-2 text-left font-semibold text-gray-600">No</th>
+                            <th class="px-3 py-2 text-left font-semibold text-gray-600">Foto</th>
+                            <th class="px-3 py-2 text-left font-semibold text-gray-600">NISN</th>
                             <th class="px-3 py-2 text-left font-semibold text-gray-600">Nama</th>
+                            <th class="px-3 py-2 text-left font-semibold text-gray-600">Tanggal Lahir</th>
                             <th class="px-3 py-2 text-left font-semibold text-gray-600">Kelas</th>
-                            <th class="px-3 py-2 text-left font-semibold text-gray-600">Suara</th>
                             <th class="px-3 py-2 text-left font-semibold text-gray-600">Status</th>
-                            <th class="px-3 py-2 text-right font-semibold text-gray-600">Aksi</th>
+                            <th class="px-3 py-2 text-center font-semibold text-gray-600">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                            <td class="px-3 py-2">1</td>
-                            <td class="px-3 py-2 font-medium text-gray-900">Raka Pratama</td>
-                            <td class="px-3 py-2">IX A</td>
-                            <td class="px-3 py-2">220</td>
-                            <td class="px-3 py-2">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-green-50 text-green-700">
-                                    Aktif
-                                </span>
-                            </td>
-                            <td class="px-3 py-2 text-right space-x-1.5">
-                                <button class="px-2 py-1 rounded-lg bg-gray-100 text-xs hover:bg-gray-200">Detail</button>
-                                <button class="px-2 py-1 rounded-lg bg-indigo-50 text-xs text-indigo-700 hover:bg-indigo-100">Edit</button>
-                            </td>
-                        </tr>
-                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                            <td class="px-3 py-2">2</td>
-                            <td class="px-3 py-2 font-medium text-gray-900">Nadia Putri</td>
-                            <td class="px-3 py-2">IX B</td>
-                            <td class="px-3 py-2">205</td>
-                            <td class="px-3 py-2">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-green-50 text-green-700">
-                                    Aktif
-                                </span>
-                            </td>
-                            <td class="px-3 py-2 text-right space-x-1.5">
-                                <button class="px-2 py-1 rounded-lg bg-gray-100 text-xs hover:bg-gray-200">Detail</button>
-                                <button class="px-2 py-1 rounded-lg bg-indigo-50 text-xs text-indigo-700 hover:bg-indigo-100">Edit</button>
-                            </td>
-                        </tr>
-                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                            <td class="px-3 py-2">3</td>
-                            <td class="px-3 py-2 font-medium text-gray-900">Dimas Al Faruq</td>
-                            <td class="px-3 py-2">VIII C</td>
-                            <td class="px-3 py-2">150</td>
-                            <td class="px-3 py-2">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-yellow-50 text-yellow-700">
-                                    Ditinjau
-                                </span>
-                            </td>
-                            <td class="px-3 py-2 text-right space-x-1.5">
-                                <button class="px-2 py-1 rounded-lg bg-gray-100 text-xs hover:bg-gray-200">Detail</button>
-                                <button class="px-2 py-1 rounded-lg bg-indigo-50 text-xs text-indigo-700 hover:bg-indigo-100">Edit</button>
-                            </td>
-                        </tr>
+                        <?php foreach ($candidate as $cand) : ?>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="px-3 py-2">
+                                    <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                                        <img src="/pp.png" alt="avatar" class="w-10 h-10 rounded-full">
+                                    </div>
+                                </td>
+                                <td class="px-3 py-2"><?= $cand['nis'] ?></td>
+                                <td class="px-3 py-2 font-medium text-black"><?= $cand['name'] ?></td>
+                                <td class="px-3 py-2"><?= $cand['birth_date'] ?></td>
+                                <td class="px-3 py-2"><?= $cand['class'] ?></td>
+                                <td class="px-3 py-2">
+                                    <?php if ($cand['is_active']) : ?>
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-green-50 text-green-700">Aktif</span>
+                                    <?php else: ?>
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-red-50 text-red-700">Tidak Aktif</span>
+                                    <?php endif ?>
+                                </td>
+                                <td class="px-3 py-2 text-center space-x-1.5">
+                                    <button class="px-2 py-1 rounded-lg bg-gray-100 text-xs hover:bg-gray-200">Detail</button>
+                                    <button class="px-2 py-1 rounded-lg bg-indigo-50 text-xs text-indigo-700 hover:bg-indigo-100">Edit</button>
+                                </td>
+                            </tr>
+                        <?php endforeach ?>
                     </tbody>
                 </table>
             </div>

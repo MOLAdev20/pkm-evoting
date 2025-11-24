@@ -17,7 +17,10 @@ class Candidate extends BaseController
 
     public function index()
     {
-        return view("admin/candidate/V_Candidate");
+        $candidate = $this->candidate->findAll();
+
+        // return $this->response->setJSON($candidate);
+        return view("admin/candidate/V_Candidate", ["candidate" => $candidate]);
     }
 
     public function new()
@@ -93,7 +96,7 @@ class Candidate extends BaseController
          * INPUT DATA LAINNYA
          * -----------------------------------*/
         $data = [
-            'nisn'       => $this->request->getPost('nisn'),
+            'nis'       => $this->request->getPost('nisn'),
             'name'       => $this->request->getPost('name'),
             'gender'     => $this->request->getPost('gender'),
             'birth_date' => $this->request->getPost('birth-date'),

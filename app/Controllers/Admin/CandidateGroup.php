@@ -21,10 +21,20 @@ class CandidateGroup extends BaseController
     }
     public function index()
     {
-        $candidates = $this->candidate->select('id, nis, name, photo')->findAll();
+        $data["candidate"] = $this->candidate->select('id, nis, name, photo')->findAll();
 
+        $data["candidateGroup"] = $this->candidateGroup->select([
+            "candidate_group.id",
+            "alias",
+            "vision",
+            "mission",
+            "cp.name as chairperson",
+            "vcp.name as vice_chairperson",
+            "cp.photo as cp_photo",
+            "vcp.photo as vcp_photo"
+        ])->join("candidate cp", "candidate_group.cp_id = cp.id")->join("candidate vcp", "candidate_group.vcp_id = vcp.id")->findAll();
 
-        return view("admin/candidate_group/V_Candidate_Group", ['candidate' => $candidates]);
+        return view("admin/candidate_group/V_Candidate_Group", $data);
     }
 
     public function store()

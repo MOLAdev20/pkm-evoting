@@ -14,7 +14,12 @@ $routes->group("admin", function ($admin) {
 
     $admin->group("candidate-group", function ($team) {
         $team->get("/", "Admin\CandidateGroup::index");
-        $team->get("new", "Admin\CandidateGroup::new");
         $team->post("store", "Admin\CandidateGroup::store");
+    });
+
+    $admin->group("participant", function ($participant) {
+        $participant->get("/", "Admin\Participant::index");
+        $participant->get("new", "Admin\Participant::new");
+        $participant->post("import", "Admin\Participant::import");
     });
 });

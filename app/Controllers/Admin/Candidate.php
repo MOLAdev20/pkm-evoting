@@ -85,8 +85,11 @@ class Candidate extends BaseController
          * -----------------------------------*/
         $photo = $this->request->getFile('photo');
 
+        // random string
+        $randomString = bin2hex(random_bytes(10));
+
         // Generate nama random biar aman
-        $newName = "CND" . date('ymd') . "." . $photo->getExtension();
+        $newName = "CND" . $randomString . "." . $photo->getExtension();
 
         // Simpan ke folder public/uploads/candidates
         $photo->move('uploads/candidates', $newName);

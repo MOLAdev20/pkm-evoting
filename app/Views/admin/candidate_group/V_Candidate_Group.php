@@ -86,93 +86,96 @@
             <button type="button" id="openModal" class="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 active:bg-indigo-800 active:scale-95 transition duration-150">➕ Buat Paslon</button>
         </div>
 
-        <!-- TABLE & PAGINATION -->
-        <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-            <div class="space-y-4">
+        <!-- Data Show -->
+        <?php foreach ($candidateGroup as $cg): ?>
+            <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                <div class="space-y-4">
 
-                <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
+                    <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
 
-                    <!-- Outer flex (responsive) -->
-                    <div class="flex flex-col md:flex-row md:items-start gap-5">
+                        <!-- Outer flex (responsive) -->
+                        <div class="flex flex-col md:flex-row md:items-start gap-5">
 
-                        <!-- FOTO OVERLAP (CENTER ON MOBILE) -->
-                        <div class="relative min-w-[100px] mx-auto md:mx-0">
-                            <!-- Ketua -->
-                            <img src="https://randomuser.me/api/portraits/men/1.jpg"
-                                class="w-16 h-16 rounded-full object-cover border-2 border-white shadow absolute top-0 left-0 z-20">
+                            <!-- FOTO OVERLAP (CENTER ON MOBILE) -->
+                            <div class="relative min-w-[100px] mx-auto md:mx-0">
+                                <!-- Ketua -->
+                                <img src="<?= base_url('uploads/candidates/' . $cg['cp_photo']) ?>"
+                                    class="w-16 h-16 rounded-full object-cover border-2 border-white shadow absolute top-0 left-0 z-20">
 
-                            <!-- Wakil -->
-                            <img src="https://randomuser.me/api/portraits/women/1.jpg"
-                                class="w-16 h-16 rounded-full object-cover border-2 border-white shadow absolute top-8 left-12 z-10">
+                                <!-- Wakil -->
+                                <img src="<?= base_url('uploads/candidates/' . $cg['vcp_photo']) ?>"
+                                    class="w-16 h-16 rounded-full object-cover border-2 border-white shadow absolute top-8 left-12 z-10">
 
-                            <!-- Space box untuk responsive layout -->
-                            <div class="w-32 h-24"></div>
-                        </div>
-
-                        <!-- KONTEN UTAMA -->
-                        <div class="flex-1 space-y-2">
-
-                            <!-- HEADER PASLON -->
-                            <div class="flex flex-wrap items-center gap-2">
-                                <h3 class="text-lg font-semibold text-gray-900">
-                                    #01 — PDI Perjuangan
-                                </h3>
-
-                                <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
-                                    Aktif
-                                </span>
+                                <!-- Space box untuk responsive layout -->
+                                <div class="w-32 h-24"></div>
                             </div>
 
-                            <!-- INFO KETUA/WAKIL -->
-                            <p class="text-sm text-gray-600">
-                                <strong>Ketua:</strong> Iskandar Dinata •
-                                <strong>Wakil:</strong> Siti Maemunah
-                            </p>
+                            <!-- KONTEN UTAMA -->
+                            <div class="flex-1 space-y-2">
 
-                            <!-- VISI -->
-                            <p class="text-sm text-gray-500 line-clamp-2">
-                                <strong>Visi:</strong> Meningkatkan partisipasi masyarakat dalam proses demokrasi dan memperkuatkan hak-hak warga negara dan internasional.
-                            </p>
+                                <!-- HEADER PASLON -->
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <h3 class="text-lg font-semibold text-gray-900">
+                                        <?= $cg['alias'] ?>
+                                    </h3>
 
-                            <!-- HASIL SUARA -->
-                            <div class="pt-3">
-
-                                <div class="flex justify-between items-center mb-1">
-                                    <span class="text-sm font-medium text-gray-700">Perolehan Suara</span>
-                                    <span class="text-sm font-semibold text-gray-900">
-                                        1,240 • 45%
+                                    <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
+                                        Aktif
                                     </span>
                                 </div>
 
-                                <!-- PROGRESS BAR -->
-                                <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                                    <div class="bg-indigo-600 h-2 rounded-full" style="width: 45%;"></div>
+                                <!-- INFO KETUA/WAKIL -->
+                                <p class="text-sm text-gray-600">
+                                    <strong>Ketua:</strong> <?= $cg['chairperson'] ?> •
+                                    <strong>Wakil:</strong> <?= $cg['vice_chairperson'] ?>
+                                </p>
+
+                                <!-- VISI -->
+                                <p class="text-sm text-gray-500 line-clamp-2">
+                                    <strong>Visi:</strong> <?= $cg['vision'] ?>
+                                </p>
+
+                                <!-- HASIL SUARA -->
+                                <div class="pt-3">
+
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="text-sm font-medium text-gray-700">Perolehan Suara</span>
+                                        <span class="text-sm font-semibold text-gray-900">
+                                            1,240 • 45%
+                                        </span>
+                                    </div>
+
+                                    <!-- PROGRESS BAR -->
+                                    <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                                        <div class="bg-indigo-600 h-2 rounded-full" style="width: 45%;"></div>
+                                    </div>
+
                                 </div>
+                            </div>
+
+                            <!-- ACTION BUTTONS -->
+                            <div class="flex md:flex-col flex-row md:items-end gap-2 mt-4 md:mt-0">
+
+                                <a href="/paslon/detail">
+                                    <button class="px-3 py-1.5 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+                                        Detail
+                                    </button>
+                                </a>
+
+                                <a href="/paslon/edit">
+                                    <button class="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                        Edit
+                                    </button>
+                                </a>
+
+                                <form action="/paslon/delete" method="POST"
+                                    onsubmit="return confirm('Hapus paslon ini?')">
+                                    <button class="px-3 py-1.5 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700">
+                                        Hapus
+                                    </button>
+                                </form>
 
                             </div>
-                        </div>
-
-                        <!-- ACTION BUTTONS -->
-                        <div class="flex md:flex-col flex-row md:items-end gap-2 mt-4 md:mt-0">
-
-                            <a href="/paslon/detail">
-                                <button class="px-3 py-1.5 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
-                                    Detail
-                                </button>
-                            </a>
-
-                            <a href="/paslon/edit">
-                                <button class="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                                    Edit
-                                </button>
-                            </a>
-
-                            <form action="/paslon/delete" method="POST"
-                                onsubmit="return confirm('Hapus paslon ini?')">
-                                <button class="px-3 py-1.5 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700">
-                                    Hapus
-                                </button>
-                            </form>
 
                         </div>
 
@@ -180,11 +183,10 @@
 
                 </div>
 
-            </div>
 
 
-
-        </section>
+            </section>
+        <?php endforeach ?>
     </div>
 </main>
 <?php $this->endSection() ?>

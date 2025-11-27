@@ -1,7 +1,7 @@
 <?php $this->extend('main_layout') ?>
 
 <?php $this->section('header') ?>
-<title>Daftar Kandidat | Admin OSIS</title>
+<title>Daftar Siswa | Admin OSIS</title>
 <?php $this->endSection() ?>
 
 <?php $this->section('content') ?>
@@ -11,8 +11,8 @@
         <!-- Page header -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-                <h1 class="text-2xl font-semibold text-gray-900">Daftar Kandidat</h1>
-                <p class="text-sm text-gray-500 mt-1">Buat dan lihat daftar kandidat</p>
+                <h1 class="text-2xl font-semibold text-gray-900">Daftar Siswa</h1>
+                <p class="text-sm text-gray-500 mt-1">Buat dan lihat daftar siswa</p>
             </div>
             <div class="flex flex-wrap items-center gap-2">
                 <button
@@ -28,7 +28,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-xs text-gray-500">Total Siswa</p>
-                        <p class="mt-1 text-2xl font-semibold text-gray-900">820</p>
+                        <p class="mt-1 text-2xl font-semibold text-gray-900"><?= $totalParticipant ?></p>
                     </div>
                     <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-lg">
                         👥
@@ -96,41 +96,29 @@
                         🔍
                     </button>
                 </div>
-                <a href="<?= base_url('admin/candidate/new') ?>" class="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 active:bg-indigo-800 active:scale-95 transition duration-150">➕ Tambah Kandidat</a>
+                <a href="<?= base_url('admin/participant/new') ?>" class="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 active:bg-indigo-800 active:scale-95 transition duration-150">➕ Tambah Siswa</a>
             </div>
 
             <div class="overflow-x-auto">
                 <table class="min-w-full text-sm">
                     <thead>
                         <tr class="border-b border-gray-200 bg-gray-50">
-                            <th class="px-3 py-2 text-left font-semibold text-gray-600">Foto</th>
                             <th class="px-3 py-2 text-left font-semibold text-gray-600">NISN</th>
                             <th class="px-3 py-2 text-left font-semibold text-gray-600">Nama</th>
-                            <th class="px-3 py-2 text-left font-semibold text-gray-600">Tanggal Lahir</th>
+                            <th class="px-3 py-2 text-left font-semibold text-gray-600">Nama Pengguna</th>
+                            <th class="px-3 py-2 text-left font-semibold text-gray-600">Jenis Kelamin</th>
                             <th class="px-3 py-2 text-left font-semibold text-gray-600">Kelas</th>
-                            <th class="px-3 py-2 text-left font-semibold text-gray-600">Status</th>
                             <th class="px-3 py-2 text-center font-semibold text-gray-600">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($candidate as $cand) : ?>
+                        <?php foreach ($participant as $prt) : ?>
                             <tr class="border-b border-gray-100 hover:bg-gray-50">
-                                <td class="px-3 py-2">
-                                    <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-                                        <img src="<?= base_url('uploads/candidates/' . $cand['photo']) ?>" alt="avatar" class="w-10 h-10 object-cover rounded-full">
-                                    </div>
-                                </td>
-                                <td class="px-3 py-2"><?= $cand['nis'] ?></td>
-                                <td class="px-3 py-2 font-medium text-black"><?= $cand['name'] ?></td>
-                                <td class="px-3 py-2"><?= $cand['birth_date'] ?></td>
-                                <td class="px-3 py-2"><?= $cand['class'] ?></td>
-                                <td class="px-3 py-2">
-                                    <?php if ($cand['is_active']) : ?>
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-green-50 text-green-700">Aktif</span>
-                                    <?php else: ?>
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-red-50 text-red-700">Tidak Aktif</span>
-                                    <?php endif ?>
-                                </td>
+                                <td class="px-3 py-2"><?= $prt['nisn'] ?></td>
+                                <td class="px-3 py-2 font-medium text-black"><?= $prt['name'] ?></td>
+                                <td class="px-3 py-2"><?= $prt['username'] ?></td>
+                                <td class="px-3 py-2"><?= $prt['gender'] == "l" ? "Laki-laki" : "Perempuan" ?></td>
+                                <td class="px-3 py-2"><?= $prt['class'] ?></td>
                                 <td class="px-3 py-2 text-center space-x-1.5">
                                     <button class="px-2 py-1 rounded-lg bg-gray-100 text-xs hover:bg-gray-200">Detail</button>
                                     <button class="px-2 py-1 rounded-lg bg-indigo-50 text-xs text-indigo-700 hover:bg-indigo-100">Edit</button>

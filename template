@@ -1,327 +1,597 @@
-<?php $this->extend('main_layout') ?>
+<!DOCTYPE html>
+<html lang="id">
 
-<?php $this->section('header') ?>
-<title>Daftar Kandidat | Admin OSIS</title>
-<?php $this->endSection() ?>
+<head>
+    <meta charset="UTF-8" />
+    <title>Admin Dashboard Pemilihan OSIS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<?php $this->section('content') ?>
-<main class="flex-1 overflow-y-auto">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-        <!-- Page header -->
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-                <h1 class="text-2xl font-semibold text-gray-900">Dashboard Pemilihan OSIS</h1>
-                <p class="text-sm text-gray-500 mt-1">Kelola pemilihan, kandidat, dan hasil perolehan suara.</p>
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800 font-sans">
+    <div class="min-h-screen flex flex-col">
+
+        <!-- TOPBAR / HEADER -->
+        <header class="bg-white border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <!-- Left: Logo + Burger -->
+                    <div class="flex items-center space-x-3">
+                        <!-- Hamburger (mobile) -->
+                        <button
+                            id="sidebarToggle"
+                            class="md:hidden inline-flex items-center justify-center p-2 rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            aria-label="Toggle sidebar">
+                            <span class="sr-only">Buka menu</span>
+                            <!-- Icon burger -->
+                            <div class="space-y-0.5">
+                                <span class="block w-4 h-0.5 bg-gray-800"></span>
+                                <span class="block w-4 h-0.5 bg-gray-800"></span>
+                                <span class="block w-4 h-0.5 bg-gray-800"></span>
+                            </div>
+                        </button>
+
+                        <!-- Logo -->
+                        <div class="flex items-center space-x-2">
+                            <div class="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-indigo-600 text-white font-bold">
+                                O
+                            </div>
+                            <div class="flex flex-col leading-tight">
+                                <span class="font-semibold text-gray-900">OSIS Admin</span>
+                                <span class="text-xs text-gray-500">SMP Contoh</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Profile menu -->
+                    <div class="flex items-center space-x-4">
+                        <!-- Bisa ditambah notifikasi, dll -->
+                        <button
+                            class="flex items-center space-x-3 rounded-full px-3 py-1.5 hover:bg-gray-50 border border-gray-200">
+                            <div class="hidden sm:block text-right">
+                                <div class="text-sm font-medium text-gray-900">Admin OSIS</div>
+                                <div class="text-xs text-gray-500">admin@smp.sch.id</div>
+                            </div>
+                            <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white text-sm font-semibold">
+                                A
+                            </div>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="flex flex-wrap items-center gap-2">
+        </header>
+
+        <div class="flex flex-1 overflow-hidden">
+
+            <!-- SIDEBAR BACKDROP (mobile) -->
+            <div
+                id="sidebarBackdrop"
+                class="fixed inset-0 bg-black bg-opacity-40 z-20 hidden md:hidden transition-opacity duration-200"></div>
+
+            <!-- SIDEBAR -->
+            <aside
+                id="sidebar"
+                class="fixed inset-y-0 left-0 z-30 w-64 transform -translate-x-full md:translate-x-0 md:static md:inset-auto md:z-auto bg-white border-r border-gray-200 shadow-lg md:shadow-none transition-transform duration-300 ease-in-out">
+                <div class="h-full flex flex-col">
+                    <!-- Sidebar header (mobile) -->
+                    <div class="flex items-center justify-between px-4 py-3 md:hidden border-b border-gray-200">
+                        <span class="font-semibold text-gray-800">Navigasi</span>
+                        <button
+                            id="sidebarClose"
+                            class="inline-flex items-center justify-center p-2 rounded-lg border border-gray-200 hover:bg-gray-50">
+                            ✖
+                        </button>
+                    </div>
+
+                    <!-- Menu -->
+                    <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto text-sm">
+                        <a
+                            href="#"
+                            class="flex items-center px-3 py-2 rounded-lg font-medium text-gray-900 bg-gray-100">
+                            <span class="mr-2">🏠</span>
+                            <span>Dashboard</span>
+                        </a>
+
+                        <a
+                            href="#"
+                            class="flex items-center px-3 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                            <span class="mr-2">🗳️</span>
+                            <span>Pemilihan</span>
+                        </a>
+
+                        <!-- Menu dengan Submenu -->
+                        <div class="pt-2">
+                            <button
+                                type="button"
+                                class="w-full flex items-center justify-between px-3 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                                data-submenu-toggle="#submenu-master">
+                                <span class="flex items-center">
+                                    <span class="mr-2">📊</span>
+                                    <span>Data Master</span>
+                                </span>
+                                <span class="text-xs text-gray-400" data-submenu-arrow>▼</span>
+                            </button>
+                            <div id="submenu-master" class="mt-1 ml-7 space-y-1 hidden">
+                                <a
+                                    href="#"
+                                    class="flex items-center px-3 py-1.5 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                                    <span class="mr-2">👥</span>
+                                    <span>Data Siswa</span>
+                                </a>
+                                <a
+                                    href="#"
+                                    class="flex items-center px-3 py-1.5 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                                    <span class="mr-2">🎓</span>
+                                    <span>Data Kandidat</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <a
+                            href="#"
+                            class="flex items-center px-3 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                            <span class="mr-2">⚙️</span>
+                            <span>Pengaturan</span>
+                        </a>
+
+                        <a
+                            href="#"
+                            class="flex items-center px-3 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                            <span class="mr-2">📄</span>
+                            <span>Laporan</span>
+                        </a>
+                    </nav>
+
+                    <!-- Footer -->
+                    <div class="px-4 py-3 border-t border-gray-200 text-xs text-gray-500">
+                        © 2025 OSIS SMP. All rights reserved.
+                    </div>
+                </div>
+            </aside>
+
+            <!-- MAIN CONTENT -->
+            <main class="flex-1 overflow-y-auto">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+                    <!-- Page header -->
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div>
+                            <h1 class="text-2xl font-semibold text-gray-900">Dashboard Pemilihan OSIS</h1>
+                            <p class="text-sm text-gray-500 mt-1">Kelola pemilihan, kandidat, dan hasil perolehan suara.</p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button
+                                id="openModal"
+                                class="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                ➕ Tambah Kandidat (Modal)
+                            </button>
+                            <button
+                                class="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium border border-gray-300 text-gray-700 hover:bg-gray-50">
+                                ⟳ Refresh Data
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STAT CARDS -->
+                    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs text-gray-500">Total Siswa</p>
+                                    <p class="mt-1 text-2xl font-semibold text-gray-900">820</p>
+                                </div>
+                                <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-lg">
+                                    👥
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs text-gray-500">Sudah Memilih</p>
+                                    <p class="mt-1 text-2xl font-semibold text-green-600">640</p>
+                                </div>
+                                <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center text-lg">
+                                    ✅
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <div class="flex justify-between text-xs text-gray-500 mb-1">
+                                    <span>Partisipasi</span>
+                                    <span>78%</span>
+                                </div>
+                                <div class="w-full h-1.5 rounded-full bg-gray-100 overflow-hidden">
+                                    <div class="h-1.5 bg-green-500 rounded-full" style="width: 78%;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs text-gray-500">Belum Memilih</p>
+                                    <p class="mt-1 text-2xl font-semibold text-orange-500">180</p>
+                                </div>
+                                <div class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-lg">
+                                    ⏳
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs text-gray-500">Jumlah Kandidat</p>
+                                    <p class="mt-1 text-2xl font-semibold text-gray-900">4</p>
+                                </div>
+                                <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-lg">
+                                    🎓
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- FORMS -->
+                    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Form Tambah Kandidat -->
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-4">Form Tambah Kandidat</h2>
+                            <form class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Kandidat</label>
+                                    <input
+                                        type="text"
+                                        class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                        placeholder="Nama lengkap kandidat" />
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Kelas</label>
+                                        <select
+                                            class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                            <option>Pilih kelas</option>
+                                            <option>VII</option>
+                                            <option>VIII</option>
+                                            <option>IX</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Urut</label>
+                                        <input
+                                            type="number"
+                                            class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                            min="1" />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Visi</label>
+                                    <textarea
+                                        rows="2"
+                                        class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                        placeholder="Visi singkat kandidat"></textarea>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Misi</label>
+                                    <textarea
+                                        rows="3"
+                                        class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                        placeholder="Misi-misi utama kandidat"></textarea>
+                                </div>
+
+                                <div class="flex items-center justify-end space-x-2 pt-2">
+                                    <button
+                                        type="button"
+                                        class="px-3 py-2 rounded-lg text-sm font-medium border border-gray-300 text-gray-700 hover:bg-gray-50">
+                                        Batal
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        class="px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                        Simpan Kandidat
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Form Pengaturan Jadwal -->
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-4">Pengaturan Jadwal Pemilihan</h2>
+                            <form class="space-y-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Mulai</label>
+                                        <input
+                                            type="date"
+                                            class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Jam Mulai</label>
+                                        <input
+                                            type="time"
+                                            class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Selesai</label>
+                                        <input
+                                            type="date"
+                                            class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Jam Selesai</label>
+                                        <input
+                                            type="time"
+                                            class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <input
+                                        id="pengumuman"
+                                        type="checkbox"
+                                        class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+                                    <label for="pengumuman" class="ml-2 text-sm text-gray-700">
+                                        Kirim pengumuman ke seluruh siswa
+                                    </label>
+                                </div>
+
+                                <div class="flex items-center justify-end space-x-2 pt-2">
+                                    <button
+                                        type="button"
+                                        class="px-3 py-2 rounded-lg text-sm font-medium border border-gray-300 text-gray-700 hover:bg-gray-50">
+                                        Reset
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-900 text-white hover:bg-black focus:outline-none focus:ring-2 focus:ring-gray-800">
+                                        Simpan Jadwal
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+
+                    <!-- TABLE & PAGINATION -->
+                    <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                            <div>
+                                <h2 class="text-lg font-semibold text-gray-900">Daftar Kandidat</h2>
+                                <p class="text-xs text-gray-500 mt-0.5">Ringkasan kandidat dan perolehan suara sementara.</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <input
+                                    type="text"
+                                    class="w-full sm:w-48 rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                    placeholder="Cari kandidat..." />
+                                <button
+                                    class="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium border border-gray-300 text-gray-700 hover:bg-gray-50">
+                                    🔄 Reset
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full text-sm">
+                                <thead>
+                                    <tr class="border-b border-gray-200 bg-gray-50">
+                                        <th class="px-3 py-2 text-left font-semibold text-gray-600">No</th>
+                                        <th class="px-3 py-2 text-left font-semibold text-gray-600">Nama</th>
+                                        <th class="px-3 py-2 text-left font-semibold text-gray-600">Kelas</th>
+                                        <th class="px-3 py-2 text-left font-semibold text-gray-600">Suara</th>
+                                        <th class="px-3 py-2 text-left font-semibold text-gray-600">Status</th>
+                                        <th class="px-3 py-2 text-right font-semibold text-gray-600">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                        <td class="px-3 py-2">1</td>
+                                        <td class="px-3 py-2 font-medium text-gray-900">Raka Pratama</td>
+                                        <td class="px-3 py-2">IX A</td>
+                                        <td class="px-3 py-2">220</td>
+                                        <td class="px-3 py-2">
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-green-50 text-green-700">
+                                                Aktif
+                                            </span>
+                                        </td>
+                                        <td class="px-3 py-2 text-right space-x-1.5">
+                                            <button class="px-2 py-1 rounded-lg bg-gray-100 text-xs hover:bg-gray-200">Detail</button>
+                                            <button class="px-2 py-1 rounded-lg bg-indigo-50 text-xs text-indigo-700 hover:bg-indigo-100">Edit</button>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                        <td class="px-3 py-2">2</td>
+                                        <td class="px-3 py-2 font-medium text-gray-900">Nadia Putri</td>
+                                        <td class="px-3 py-2">IX B</td>
+                                        <td class="px-3 py-2">205</td>
+                                        <td class="px-3 py-2">
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-green-50 text-green-700">
+                                                Aktif
+                                            </span>
+                                        </td>
+                                        <td class="px-3 py-2 text-right space-x-1.5">
+                                            <button class="px-2 py-1 rounded-lg bg-gray-100 text-xs hover:bg-gray-200">Detail</button>
+                                            <button class="px-2 py-1 rounded-lg bg-indigo-50 text-xs text-indigo-700 hover:bg-indigo-100">Edit</button>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                        <td class="px-3 py-2">3</td>
+                                        <td class="px-3 py-2 font-medium text-gray-900">Dimas Al Faruq</td>
+                                        <td class="px-3 py-2">VIII C</td>
+                                        <td class="px-3 py-2">150</td>
+                                        <td class="px-3 py-2">
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-yellow-50 text-yellow-700">
+                                                Ditinjau
+                                            </span>
+                                        </td>
+                                        <td class="px-3 py-2 text-right space-x-1.5">
+                                            <button class="px-2 py-1 rounded-lg bg-gray-100 text-xs hover:bg-gray-200">Detail</button>
+                                            <button class="px-2 py-1 rounded-lg bg-indigo-50 text-xs text-indigo-700 hover:bg-indigo-100">Edit</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-4">
+                            <p class="text-xs text-gray-500">
+                                Menampilkan <span class="font-semibold text-gray-700">1–3</span> dari <span class="font-semibold text-gray-700">3</span> kandidat
+                            </p>
+                            <div class="inline-flex items-center space-x-1 text-xs">
+                                <button
+                                    class="px-2 py-1 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
+                                    ‹ Sebelumnya
+                                </button>
+                                <button
+                                    class="px-2.5 py-1 rounded-lg border border-gray-900 bg-gray-900 text-white">
+                                    1
+                                </button>
+                                <button
+                                    class="px-2.5 py-1 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
+                                    2
+                                </button>
+                                <button
+                                    class="px-2.5 py-1 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
+                                    3
+                                </button>
+                                <button
+                                    class="px-2 py-1 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
+                                    Berikutnya ›
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL (POP-UP) -->
+    <div
+        id="modal"
+        class="fixed inset-0 z-40 flex items-center justify-center px-4 py-6 bg-black bg-opacity-40 opacity-0 pointer-events-none transition-opacity duration-200">
+        <div
+            id="modalPanel"
+            class="bg-white max-w-lg w-full rounded-2xl shadow-xl transform scale-95 transition-transform duration-200">
+            <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+                <h3 class="text-base font-semibold text-gray-900">Tambah Kandidat Cepat</h3>
                 <button
-                    id="openModal"
-                    class="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    ➕ Tambah Kandidat (Modal)
+                    id="modalClose"
+                    class="p-1.5 rounded-full hover:bg-gray-100 text-gray-500">
+                    ✖
+                </button>
+            </div>
+            <div class="px-5 py-4 space-y-3 text-sm">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Kandidat</label>
+                    <input
+                        type="text"
+                        class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="Nama kandidat" />
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Kelas</label>
+                        <select
+                            class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <option>Pilih kelas</option>
+                            <option>VII</option>
+                            <option>VIII</option>
+                            <option>IX</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Urut</label>
+                        <input
+                            type="number"
+                            class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                            min="1" />
+                    </div>
+                </div>
+            </div>
+            <div class="px-5 py-4 border-t border-gray-100 flex items-center justify-end space-x-2">
+                <button
+                    id="modalCancel"
+                    class="px-3 py-2 rounded-lg text-sm font-medium border border-gray-300 text-gray-700 hover:bg-gray-50">
+                    Batal
                 </button>
                 <button
-                    class="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium border border-gray-300 text-gray-700 hover:bg-gray-50">
-                    ⟳ Refresh Data
+                    class="px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    Simpan
                 </button>
             </div>
         </div>
-
-        <!-- STAT CARDS -->
-        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-xs text-gray-500">Total Siswa</p>
-                        <p class="mt-1 text-2xl font-semibold text-gray-900">820</p>
-                    </div>
-                    <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-lg">
-                        👥
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-xs text-gray-500">Sudah Memilih</p>
-                        <p class="mt-1 text-2xl font-semibold text-green-600">640</p>
-                    </div>
-                    <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center text-lg">
-                        ✅
-                    </div>
-                </div>
-                <div class="mt-3">
-                    <div class="flex justify-between text-xs text-gray-500 mb-1">
-                        <span>Partisipasi</span>
-                        <span>78%</span>
-                    </div>
-                    <div class="w-full h-1.5 rounded-full bg-gray-100 overflow-hidden">
-                        <div class="h-1.5 bg-green-500 rounded-full" style="width: 78%;"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-xs text-gray-500">Belum Memilih</p>
-                        <p class="mt-1 text-2xl font-semibold text-orange-500">180</p>
-                    </div>
-                    <div class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-lg">
-                        ⏳
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-xs text-gray-500">Jumlah Kandidat</p>
-                        <p class="mt-1 text-2xl font-semibold text-gray-900">4</p>
-                    </div>
-                    <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-lg">
-                        🎓
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- FORMS -->
-        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Form Tambah Kandidat -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-                <h2 class="text-lg font-semibold text-gray-900 mb-4">Form Tambah Kandidat</h2>
-                <form class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Kandidat</label>
-                        <input
-                            type="text"
-                            class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="Nama lengkap kandidat" />
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Kelas</label>
-                            <select
-                                class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                                <option>Pilih kelas</option>
-                                <option>VII</option>
-                                <option>VIII</option>
-                                <option>IX</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Urut</label>
-                            <input
-                                type="number"
-                                class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                min="1" />
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Visi</label>
-                        <textarea
-                            rows="2"
-                            class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="Visi singkat kandidat"></textarea>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Misi</label>
-                        <textarea
-                            rows="3"
-                            class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="Misi-misi utama kandidat"></textarea>
-                    </div>
-
-                    <div class="flex items-center justify-end space-x-2 pt-2">
-                        <button
-                            type="button"
-                            class="px-3 py-2 rounded-lg text-sm font-medium border border-gray-300 text-gray-700 hover:bg-gray-50">
-                            Batal
-                        </button>
-                        <button
-                            type="submit"
-                            class="px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            Simpan Kandidat
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Form Pengaturan Jadwal -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-                <h2 class="text-lg font-semibold text-gray-900 mb-4">Pengaturan Jadwal Pemilihan</h2>
-                <form class="space-y-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Mulai</label>
-                            <input
-                                type="date"
-                                class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Jam Mulai</label>
-                            <input
-                                type="time"
-                                class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Selesai</label>
-                            <input
-                                type="date"
-                                class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Jam Selesai</label>
-                            <input
-                                type="time"
-                                class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
-                        </div>
-                    </div>
-
-                    <div class="flex items-center">
-                        <input
-                            id="pengumuman"
-                            type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-                        <label for="pengumuman" class="ml-2 text-sm text-gray-700">
-                            Kirim pengumuman ke seluruh siswa
-                        </label>
-                    </div>
-
-                    <div class="flex items-center justify-end space-x-2 pt-2">
-                        <button
-                            type="button"
-                            class="px-3 py-2 rounded-lg text-sm font-medium border border-gray-300 text-gray-700 hover:bg-gray-50">
-                            Reset
-                        </button>
-                        <button
-                            type="submit"
-                            class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-900 text-white hover:bg-black focus:outline-none focus:ring-2 focus:ring-gray-800">
-                            Simpan Jadwal
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </section>
-
-        <!-- TABLE & PAGINATION -->
-        <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
-                <div>
-                    <h2 class="text-lg font-semibold text-gray-900">Daftar Kandidat</h2>
-                    <p class="text-xs text-gray-500 mt-0.5">Ringkasan kandidat dan perolehan suara sementara.</p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <input
-                        type="text"
-                        class="w-full sm:w-48 rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                        placeholder="Cari kandidat..." />
-                    <button
-                        class="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium border border-gray-300 text-gray-700 hover:bg-gray-50">
-                        🔄 Reset
-                    </button>
-                </div>
-            </div>
-
-            <div class="overflow-x-auto">
-                <table class="min-w-full text-sm">
-                    <thead>
-                        <tr class="border-b border-gray-200 bg-gray-50">
-                            <th class="px-3 py-2 text-left font-semibold text-gray-600">No</th>
-                            <th class="px-3 py-2 text-left font-semibold text-gray-600">Nama</th>
-                            <th class="px-3 py-2 text-left font-semibold text-gray-600">Kelas</th>
-                            <th class="px-3 py-2 text-left font-semibold text-gray-600">Suara</th>
-                            <th class="px-3 py-2 text-left font-semibold text-gray-600">Status</th>
-                            <th class="px-3 py-2 text-right font-semibold text-gray-600">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                            <td class="px-3 py-2">1</td>
-                            <td class="px-3 py-2 font-medium text-gray-900">Raka Pratama</td>
-                            <td class="px-3 py-2">IX A</td>
-                            <td class="px-3 py-2">220</td>
-                            <td class="px-3 py-2">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-green-50 text-green-700">
-                                    Aktif
-                                </span>
-                            </td>
-                            <td class="px-3 py-2 text-right space-x-1.5">
-                                <button class="px-2 py-1 rounded-lg bg-gray-100 text-xs hover:bg-gray-200">Detail</button>
-                                <button class="px-2 py-1 rounded-lg bg-indigo-50 text-xs text-indigo-700 hover:bg-indigo-100">Edit</button>
-                            </td>
-                        </tr>
-                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                            <td class="px-3 py-2">2</td>
-                            <td class="px-3 py-2 font-medium text-gray-900">Nadia Putri</td>
-                            <td class="px-3 py-2">IX B</td>
-                            <td class="px-3 py-2">205</td>
-                            <td class="px-3 py-2">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-green-50 text-green-700">
-                                    Aktif
-                                </span>
-                            </td>
-                            <td class="px-3 py-2 text-right space-x-1.5">
-                                <button class="px-2 py-1 rounded-lg bg-gray-100 text-xs hover:bg-gray-200">Detail</button>
-                                <button class="px-2 py-1 rounded-lg bg-indigo-50 text-xs text-indigo-700 hover:bg-indigo-100">Edit</button>
-                            </td>
-                        </tr>
-                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                            <td class="px-3 py-2">3</td>
-                            <td class="px-3 py-2 font-medium text-gray-900">Dimas Al Faruq</td>
-                            <td class="px-3 py-2">VIII C</td>
-                            <td class="px-3 py-2">150</td>
-                            <td class="px-3 py-2">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-yellow-50 text-yellow-700">
-                                    Ditinjau
-                                </span>
-                            </td>
-                            <td class="px-3 py-2 text-right space-x-1.5">
-                                <button class="px-2 py-1 rounded-lg bg-gray-100 text-xs hover:bg-gray-200">Detail</button>
-                                <button class="px-2 py-1 rounded-lg bg-indigo-50 text-xs text-indigo-700 hover:bg-indigo-100">Edit</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Pagination -->
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-4">
-                <p class="text-xs text-gray-500">
-                    Menampilkan <span class="font-semibold text-gray-700">1–3</span> dari <span class="font-semibold text-gray-700">3</span> kandidat
-                </p>
-                <div class="inline-flex items-center space-x-1 text-xs">
-                    <button
-                        class="px-2 py-1 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
-                        ‹ Sebelumnya
-                    </button>
-                    <button
-                        class="px-2.5 py-1 rounded-lg border border-gray-900 bg-gray-900 text-white">
-                        1
-                    </button>
-                    <button
-                        class="px-2.5 py-1 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
-                        2
-                    </button>
-                    <button
-                        class="px-2.5 py-1 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
-                        3
-                    </button>
-                    <button
-                        class="px-2 py-1 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
-                        Berikutnya ›
-                    </button>
-                </div>
-            </div>
-        </section>
     </div>
-</main>
-<?php $this->endSection() ?>
+
+    <!-- JAVASCRIPT: Sidebar + Modal -->
+    <script>
+        $(function() {
+            // Sidebar (mobile) slide drawer
+            function openSidebar() {
+                $('#sidebar').removeClass('-translate-x-full').addClass('translate-x-0');
+                $('#sidebarBackdrop').removeClass('hidden').css('opacity', 1);
+            }
+
+            function closeSidebar() {
+                $('#sidebar').addClass('-translate-x-full').removeClass('translate-x-0');
+                $('#sidebarBackdrop').addClass('hidden').css('opacity', 0);
+            }
+
+            $('#sidebarToggle').on('click', function() {
+                openSidebar();
+            });
+
+            $('#sidebarClose, #sidebarBackdrop').on('click', function() {
+                closeSidebar();
+            });
+
+            // Submenu toggle
+            $('[data-submenu-toggle]').on('click', function() {
+                var target = $(this).data('submenu-toggle');
+                $(target).toggleClass('hidden');
+
+                var arrow = $(this).find('[data-submenu-arrow]');
+                arrow.toggleClass('rotate-180');
+            });
+
+            // Modal
+            function openModal() {
+                $('#modal').removeClass('opacity-0 pointer-events-none');
+                $('#modalPanel').removeClass('scale-95').addClass('scale-100');
+            }
+
+            function closeModal() {
+                $('#modal').addClass('opacity-0 pointer-events-none');
+                $('#modalPanel').removeClass('scale-100').addClass('scale-95');
+            }
+
+            $('#openModal').on('click', function() {
+                openModal();
+            });
+
+            $('#modalClose, #modalCancel').on('click', function() {
+                closeModal();
+            });
+
+            // Close modal when clicking backdrop
+            $('#modal').on('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

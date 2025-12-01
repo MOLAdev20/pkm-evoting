@@ -16,7 +16,7 @@
                 <nav class="flex items-center gap-1 text-sm text-gray-500 mt-1">
                     <a href="#" class="hover:text-gray-700">Dashboard</a>
                     <span>/</span>
-                    <a href="<?= base_url('admin/candidate/') ?>" class="hover:text-gray-700">Peserta</a>
+                    <a href="<?= base_url('admin/participant') ?>" class="hover:text-gray-700">Peserta</a>
                     <span>/</span>
                     <span class="text-gray-900 font-medium">Input Peserta Baru</span>
                 </nav>
@@ -107,62 +107,38 @@
 
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div>
-                                <label for="nisn" class="block text-sm font-medium text-gray-700 mb-1">* NISN</label>
-                                <input
-                                    type="number"
-                                    id="nisn"
-                                    name="nisn"
-                                    value="<?= old('nisn') ?>"
+                                <label for="class" class="block text-sm font-medium text-gray-700 mb-1">* Kelas</label>
+                                <select 
+                                    id="class"
+                                    name="class"
+                                    value="<?= old('class') ?>"
                                     class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300 ease-in-out"
-                                    min="1"
-                                    required />
+                                    required>
+                                    <option value="">-- Pilih Kelas --</option>
+                                    <option value="X">X</option>
+                                    <option value="XI">XI</option>
+                                    <option value="XII">XII</option>
+                                </select>
                             </div>
                             <div>
-                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">* Nama Kandidat</label>
+                                <label for="username" class="block text-sm font-medium text-gray-700 mb-1">* Nama Pengguna</label>
                                 <input
                                     type="text"
-                                    id="name"
-                                    name="name"
-                                    value="<?= old('name') ?>"
+                                    id="username"
+                                    name="username"
+                                    value="<?= old('username') ?>"
                                     class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300 ease-in-out"
                                     placeholder="Nama lengkap kandidat" />
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">* Jenis Kelamin</label>
-                                <div class="flex items-center space-x-4">
-
-                                    <!-- Laki-laki -->
-                                    <label for="laki-laki" class="flex items-center cursor-pointer space-x-2">
-                                        <input
-                                            type="radio"
-                                            id="laki-laki"
-                                            name="gender"
-                                            value="l"
-                                            class="hidden peer"
-                                            required
-                                            <?= old('gender') == 'l' ? 'checked' : '' ?>>
-                                        <span
-                                            class="w-4 h-4 rounded-full border border-gray-400 peer-checked:border-indigo-600 peer-checked:bg-indigo-600 transition"></span>
-                                        <span class="text-gray-700">Laki-laki</span>
-                                    </label>
-
-                                    <!-- Perempuan -->
-                                    <label for="perempuan" class="flex items-center cursor-pointer space-x-2">
-                                        <input
-                                            type="radio"
-                                            id="perempuan"
-                                            name="gender"
-                                            value="p"
-                                            class="hidden peer"
-                                            required
-                                            <?= old('gender') == 'p' ? 'checked' : '' ?>>
-                                        <span
-                                            class="w-4 h-4 rounded-full border border-gray-400 peer-checked:border-pink-500 peer-checked:bg-pink-500 transition"></span>
-                                        <span class="text-gray-700">Perempuan</span>
-                                    </label>
-
-                                </div>
-
+                                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">* Kata Sandi</label>
+                                <input
+                                    type="text"
+                                    id="password"
+                                    name="password"
+                                    value="<?= old('password') ?>"
+                                    class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300 ease-in-out"
+                                    placeholder="Nama lengkap kandidat" />
                             </div>
                         </div>
 

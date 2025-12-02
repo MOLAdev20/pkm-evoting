@@ -87,7 +87,7 @@
                     TPS Online • Siswa
                 </span>
                 <a
-                    href="/participant/login"
+                    href="<?= base_url('login/participant') ?>"
                     class="inline-flex items-center gap-1.5 rounded-full bg-brand px-3.5 py-1.5 text-xs font-medium text-white shadow-sm shadow-brand/30 hover:bg-blue-700">
                     <span>Masuk untuk memilih</span>
                     <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
@@ -130,7 +130,7 @@
 
                     <div class="flex flex-wrap items-center gap-3">
                         <a
-                            href="/participant/login"
+                            href="<?= base_url('login/participant') ?>"
                             class="inline-flex items-center gap-2 rounded-2xl bg-brand px-4 py-2 text-sm font-medium text-white shadow-md shadow-brand/30 hover:bg-blue-700">
                             <span>Masuk untuk ikut memilih</span>
                         </a>
@@ -211,7 +211,7 @@
             <div class="mb-5 flex flex-wrap items-end justify-between gap-3">
                 <div>
                     <h2 class="text-lg font-semibold text-slate-900">
-                        Perolehan suara sementara
+                        Pemlihan Sedang Berlangsung
                     </h2>
                     <p class="text-xs text-slate-500">
                         Angka di bawah diperbarui secara berkala dan belum merupakan hasil resmi.
@@ -224,125 +224,46 @@
             </div>
 
             <div class="grid gap-4 md:grid-cols-3">
-                <!-- Paslon 1 -->
-                <article
-                    class="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-soft/40 transition-transform"
-                    data-candidate-id="A1"
-                    data-no="1"
-                    data-nama="Nadia &amp; Raka">
-                    <div class="flex items-start justify-between gap-2">
-                        <div>
-                            <p class="text-[11px] uppercase tracking-[0.16em] text-slate-500">Paslon 01</p>
-                            <h3 class="text-sm font-semibold text-slate-900">Nadia &amp; Raka</h3>
-                            <p class="text-[11px] text-slate-500">OSIS inklusif &amp; berprestasi</p>
-                        </div>
-                        <div class="flex flex-col items-end text-right text-[11px] text-slate-500">
-                            <span data-role="percent" class="text-xs font-semibold text-slate-900">0%</span>
-                            <span data-role="votes">0 suara</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <img
-                            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop"
-                            alt="Foto Ketua Nadia"
-                            class="h-10 w-10 rounded-full object-cover" />
-                        <img
-                            src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=400&auto=format&fit=crop"
-                            alt="Foto Wakil Raka"
-                            class="h-10 w-10 rounded-full object-cover" />
-                    </div>
-                    <div>
-                        <div class="mb-1 flex items-center justify-between text-[11px] text-slate-500">
-                            <span>Perolehan suara</span>
-                        </div>
-                        <div class="h-2.5 w-full overflow-hidden rounded-full bg-slate-100">
-                            <div
-                                data-role="bar"
-                                class="h-2.5 rounded-full bg-brand transition-all duration-500 ease-out"
-                                style="width:0%;"></div>
-                        </div>
-                    </div>
-                </article>
 
-                <!-- Paslon 2 -->
-                <article
-                    class="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-soft/40 transition-transform"
-                    data-candidate-id="B2"
-                    data-no="2"
-                    data-nama="Dewi &amp; Arif">
-                    <div class="flex items-start justify-between gap-2">
+                <?php foreach ($candidateGroup as $cg): ?>
+                    <article
+                        class="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-soft/40 transition-transform"
+                        data-candidate-id="<?= $cg["id"] ?>"
+                        data-no="<?= $cg["id"] ?>"
+                        data-nama="<?= $cg["chairperson"] ?> &amp; <?= $cg["vice_chairperson"] ?>">
+                        <div class="flex items-start justify-between gap-2">
+                            <div>
+                                <p class="text-[11px] uppercase tracking-[0.16em] text-slate-500"><?= $cg["alias"] ?></p>
+                                <h3 class="text-sm font-semibold text-slate-900"><?= $cg["chairperson"] ?> &amp; <?= $cg["vice_chairperson"] ?></h3>
+                            </div>
+                            <div class="flex flex-col items-end text-right text-[11px] text-slate-500">
+                                <span data-role="percent" class="text-xs font-semibold text-slate-900">0%</span>
+                                <span data-role="votes">0 suara</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <img
+                                src="<?= base_url('uploads/candidates/' . $cg['cp_photo']) ?>"
+                                alt="Foto Ketua Nadia"
+                                class="h-10 w-10 rounded-full object-cover" />
+                            <img
+                                src="<?= base_url('uploads/candidates/' . $cg['vcp_photo']) ?>"
+                                alt="Foto Wakil Raka"
+                                class="h-10 w-10 rounded-full object-cover" />
+                        </div>
                         <div>
-                            <p class="text-[11px] uppercase tracking-[0.16em] text-slate-500">Paslon 02</p>
-                            <h3 class="text-sm font-semibold text-slate-900">Dewi &amp; Arif</h3>
-                            <p class="text-[11px] text-slate-500">Sehat • Kreatif • Kolaboratif</p>
+                            <div class="mb-1 flex items-center justify-between text-[11px] text-slate-500">
+                                <span>Perolehan suara</span>
+                            </div>
+                            <div class="h-2.5 w-full overflow-hidden rounded-full bg-slate-100">
+                                <div
+                                    data-role="bar"
+                                    class="h-2.5 rounded-full bg-brand transition-all duration-500 ease-out"
+                                    style="width:0%;"></div>
+                            </div>
                         </div>
-                        <div class="flex flex-col items-end text-right text-[11px] text-slate-500">
-                            <span data-role="percent" class="text-xs font-semibold text-slate-900">0%</span>
-                            <span data-role="votes">0 suara</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <img
-                            src="https://images.unsplash.com/photo-1518105779142-d975f22f1b0b?q=80&w=400&auto=format&fit=crop"
-                            alt="Foto Ketua Dewi"
-                            class="h-10 w-10 rounded-full object-cover" />
-                        <img
-                            src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop"
-                            alt="Foto Wakil Arif"
-                            class="h-10 w-10 rounded-full object-cover" />
-                    </div>
-                    <div>
-                        <div class="mb-1 flex items-center justify-between text-[11px] text-slate-500">
-                            <span>Perolehan suara</span>
-                        </div>
-                        <div class="h-2.5 w-full overflow-hidden rounded-full bg-slate-100">
-                            <div
-                                data-role="bar"
-                                class="h-2.5 rounded-full bg-brand transition-all duration-500 ease-out"
-                                style="width:0%;"></div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Paslon 3 -->
-                <article
-                    class="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-soft/40 transition-transform"
-                    data-candidate-id="C3"
-                    data-no="3"
-                    data-nama="Satria &amp; Maya">
-                    <div class="flex items-start justify-between gap-2">
-                        <div>
-                            <p class="text-[11px] uppercase tracking-[0.16em] text-slate-500">Paslon 03</p>
-                            <h3 class="text-sm font-semibold text-slate-900">Satria &amp; Maya</h3>
-                            <p class="text-[11px] text-slate-500">Digitalisasi &amp; transparansi</p>
-                        </div>
-                        <div class="flex flex-col items-end text-right text-[11px] text-slate-500">
-                            <span data-role="percent" class="text-xs font-semibold text-slate-900">0%</span>
-                            <span data-role="votes">0 suara</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <img
-                            src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=400&auto=format&fit=crop"
-                            alt="Foto Ketua Satria"
-                            class="h-10 w-10 rounded-full object-cover" />
-                        <img
-                            src="https://images.unsplash.com/photo-1544005316-04ce0be0b15f?q=80&w=400&auto=format&fit=crop"
-                            alt="Foto Wakil Maya"
-                            class="h-10 w-10 rounded-full object-cover" />
-                    </div>
-                    <div>
-                        <div class="mb-1 flex items-center justify-between text-[11px] text-slate-500">
-                            <span>Perolehan suara</span>
-                        </div>
-                        <div class="h-2.5 w-full overflow-hidden rounded-full bg-slate-100">
-                            <div
-                                data-role="bar"
-                                class="h-2.5 rounded-full bg-brand transition-all duration-500 ease-out"
-                                style="width:0%;"></div>
-                        </div>
-                    </div>
-                </article>
+                    </article>
+                <?php endforeach; ?>
             </div>
 
             <p class="mt-3 text-[11px] text-slate-500">
@@ -423,8 +344,12 @@
         updateTimer();
         setInterval(updateTimer, 1000);
 
-        // ===== QUICK COUNT MOCK (GANTI KE API DI PRODUKSI) =====
+        // ===== QUICK COUNT LIVE (PAKAI API) =====
+
+        // Kartu kandidat (pastikan di HTML pakai data-candidate-id, data-role="votes", dll)
         const cards = Array.from(document.querySelectorAll("[data-candidate-id]"));
+
+        // Map id kandidat -> jumlah suara
         const counts = {};
         cards.forEach(c => {
             const id = c.dataset.candidateId;
@@ -436,11 +361,15 @@
         const heroTotalEl = document.getElementById("heroTotal");
         const heroPercentEl = document.getElementById("heroPercent");
 
+        // snapshot kecil (tiga slot) – isinya nanti diisi top 3 paslon
         const snapA1 = document.getElementById("snapA1");
         const snapB2 = document.getElementById("snapB2");
         const snapC3 = document.getElementById("snapC3");
 
-        const TARGET_VOTERS = 800; // buat hitung persen partisipasi
+        const TARGET_VOTERS = 800; // buat hitung persen partisipasi (sesuaikan)
+        // const LIVE_VOTES_URL = "<?= site_url('election/ajax/live-votes'); ?>";
+        // atau kalau mau hardcode:
+        const LIVE_VOTES_URL = 'http://localhost:8080/election/ajax/live-votes';
 
         function animateCandidate(id) {
             const card = document.querySelector(`[data-candidate-id="${id}"]`);
@@ -459,10 +388,16 @@
             }
         }
 
-        function renderLive() {
-            const total = Object.values(counts).reduce((a, b) => a + b, 0);
+        function renderLive(totalOverride) {
+            // totalOverride: dari backend (data.total), kalau ada
+            const computedTotal = Object.values(counts).reduce((a, b) => a + b, 0);
+            const total = (typeof totalOverride === "number" && !Number.isNaN(totalOverride)) ?
+                totalOverride :
+                computedTotal;
+
             const now = new Date();
 
+            // Update tiap kartu kandidat
             cards.forEach(card => {
                 const id = card.dataset.candidateId;
                 const n = counts[id] || 0;
@@ -477,12 +412,19 @@
                 if (barEl) barEl.style.width = `${pct}%`;
             });
 
-            if (totalVotesEl) totalVotesEl.textContent = `Total suara terekam: ${total.toLocaleString("id-ID")}`;
-            if (heroTotalEl) heroTotalEl.textContent = total.toLocaleString("id-ID");
+            // Total suara dan partisipasi
+            if (totalVotesEl)
+                totalVotesEl.textContent = `Total suara terekam: ${total.toLocaleString("id-ID")}`;
+            if (heroTotalEl)
+                heroTotalEl.textContent = total.toLocaleString("id-ID");
 
-            const partPercent = TARGET_VOTERS ? Math.round((total / TARGET_VOTERS) * 100) : 0;
-            if (heroPercentEl) heroPercentEl.textContent = `${partPercent}%`;
+            const partPercent = TARGET_VOTERS ?
+                Math.round((total / TARGET_VOTERS) * 100) :
+                0;
+            if (heroPercentEl)
+                heroPercentEl.textContent = `${partPercent}%`;
 
+            // Info waktu update terakhir
             if (lastUpdateEl) {
                 lastUpdateEl.textContent =
                     "Pembaruan terakhir: " +
@@ -493,37 +435,100 @@
                     });
             }
 
-            // snapshot kecil di hero
+            // Snapshot kecil: pakai top 3 paslon
+            const snapSlots = [snapA1, snapB2, snapC3];
             const totalForSnap = total || 1;
-            const pctA1 = Math.round(((counts["A1"] || 0) / totalForSnap) * 100);
-            const pctB2 = Math.round(((counts["B2"] || 0) / totalForSnap) * 100);
-            const pctC3 = Math.round(((counts["C3"] || 0) / totalForSnap) * 100);
-            if (snapA1) snapA1.textContent = `${pctA1}%`;
-            if (snapB2) snapB2.textContent = `${pctB2}%`;
-            if (snapC3) snapC3.textContent = `${pctC3}%`;
+            if (snapSlots.some(el => el)) {
+                const entries = Object.entries(counts); // [ [id, count], ... ]
+                entries.sort((a, b) => b[1] - a[1]); // urut dari suara terbanyak
+
+                entries.slice(0, snapSlots.length).forEach(([id, value], idx) => {
+                    const slotEl = snapSlots[idx];
+                    if (!slotEl) return;
+                    const pct = Math.round((value / totalForSnap) * 100);
+                    slotEl.textContent = `${pct}%`;
+                });
+            }
         }
 
-        // simulasi polling live (ganti dengan fetch/WebSocket di produksi)
-        async function pollMock() {
-            const ids = cards.map(c => c.dataset.candidateId).filter(Boolean);
-            if (!ids.length) return;
+        async function pollLive() {
+            try {
+                if (!cards.length) return;
 
-            // PRODUKSI (contoh):
-            // const res = await fetch('/api/public/live');
-            // const json = await res.json();
-            // Object.assign(counts, json.counts);
-            // Object.keys(json.changed).forEach(id => animateCandidate(id));
+                const res = await fetch(LIVE_VOTES_URL, {
+                    method: "GET",
+                    headers: {
+                        "Accept": "application/json"
+                    },
+                    cache: "no-cache"
+                });
 
-            // DEMO: random candidate naik
-            const id = ids[Math.floor(Math.random() * ids.length)];
-            counts[id] = (counts[id] || 0) + Math.floor(Math.random() * 4); // 0–3 suara
-            animateCandidate(id);
-            renderLive();
+                if (!res.ok) {
+                    throw new Error("HTTP error " + res.status);
+                }
+
+                const json = await res.json();
+                // Format:
+                // {
+                //   "success": true,
+                //   "data": {
+                //     "votes": [
+                //       { "id": "1", "alias": "Kebangkitan Siswa", "total_suara": "2" },
+                //       { "id": "2", "alias": "Akum Team", "total_suara": "1" }
+                //     ],
+                //     "total": 3
+                //   }
+                // }
+
+                if (!json || !json.success || !json.data) {
+                    console.warn("[quick-count] response tidak sesuai format");
+                    return;
+                }
+
+                const votes = Array.isArray(json.data.votes) ? json.data.votes : [];
+                const totalFromBackend =
+                    json.data.total != null ? Number(json.data.total) : undefined;
+
+                // Siapkan map baru dari hasil backend
+                const newCounts = {};
+                cards.forEach(card => {
+                    const id = card.dataset.candidateId;
+                    if (id) newCounts[id] = 0;
+                });
+
+                votes.forEach(item => {
+                    const id = String(item.id);
+                    const count = Number(item.total_suara) || 0;
+                    newCounts[id] = count;
+                });
+
+                // Animasi hanya kandidat yang naik suaranya
+                Object.keys(newCounts).forEach(id => {
+                    const oldVal = counts[id] || 0;
+                    const newVal = newCounts[id];
+                    if (newVal > oldVal) {
+                        animateCandidate(id);
+                    }
+                });
+
+                // Copy newCounts ke counts (mutasi in-place)
+                Object.keys(newCounts).forEach(id => {
+                    counts[id] = newCounts[id];
+                });
+
+                // Render ulang UI
+                renderLive(totalFromBackend);
+            } catch (e) {
+                console.error("Gagal mengambil quick count:", e);
+            }
         }
 
-        renderLive();
-        setInterval(pollMock, 5000);
+        // Render awal (semua 0), lalu mulai polling setiap 5 detik
+        renderLive(0);
+        pollLive();
+        setInterval(pollLive, 5000);
     </script>
+
 </body>
 
 </html>

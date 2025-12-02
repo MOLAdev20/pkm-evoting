@@ -28,20 +28,20 @@
         <section class="grid grid-cols-1">
             <!-- Form Tambah Kandidat -->
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-                <?= form_open_multipart('admin/candidate/store', ["class" => "space-y-4"]) ?>
-
-                <?php if (session()->has('errors')) : ?>
-                    <div class="p-3 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">
-                        <ul class="list-disc list-inside">
-                            <?php foreach (session('errors') as $error) : ?>
-                                <li><?= esc($error) ?></li>
-                            <?php endforeach ?>
-                        </ul>
-                    </div>
-                <?php endif; ?>
+                <?= form_open_multipart('admin/participant/store', ["class" => "space-y-4"]) ?>
 
 
                 <div class="grid grid-cols-1 gap-6">
+
+                    <?php if (session()->has('errors')) : ?>
+                        <div class="p-3 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">
+                            <ul class="list-disc list-inside">
+                                <?php foreach (session('errors') as $error) : ?>
+                                    <li><?= esc($error) ?></li>
+                                <?php endforeach ?>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
 
                     <div class="space-y-4 col-span-1">
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -108,16 +108,15 @@
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div>
                                 <label for="class" class="block text-sm font-medium text-gray-700 mb-1">* Kelas</label>
-                                <select 
+                                <select
                                     id="class"
                                     name="class"
-                                    value="<?= old('class') ?>"
                                     class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300 ease-in-out"
                                     required>
                                     <option value="">-- Pilih Kelas --</option>
-                                    <option value="X">X</option>
-                                    <option value="XI">XI</option>
-                                    <option value="XII">XII</option>
+                                    <option value="X" <?= old('class') == 'X' ? 'selected' : '' ?>>X</option>
+                                    <option value="XI" <?= old('class') == 'XI' ? 'selected' : '' ?>>XI</option>
+                                    <option value="XII" <?= old('class') == 'XII' ? 'selected' : '' ?>>XII</option>
                                 </select>
                             </div>
                             <div>
@@ -161,111 +160,101 @@
 
 
         <section class="grid grid-cols-1">
-            <!-- Form Tambah Kandidat -->
+            <!-- Form Tambah Partisipan -->
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-                <?= form_open_multipart('admin/candidate/store', ["class" => "space-y-4"]) ?>
-
-                <?php if (session()->has('errors')) : ?>
-                    <div class="p-3 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">
-                        <ul class="list-disc list-inside">
-                            <?php foreach (session('errors') as $error) : ?>
-                                <li><?= esc($error) ?></li>
-                            <?php endforeach ?>
-                        </ul>
-                    </div>
-                <?php endif; ?>
+                <div class="space-y-4">
 
 
-                <div class="gap-6">
-                    <div class="w-full bg-white rounded-2xl p-10 shadow-lg border border-gray-100">
-                        <!-- Jumbo Heading -->
-                        <h2 class="text-2xl sm:text-4xl font-bold text-gray-800 leading-tight">
-                            Lelah mengunggah siswa satu per satu?
-                        </h2>
+                    <div class="gap-6">
+                        <div class="w-full bg-white rounded-2xl p-10 shadow-lg border border-gray-100">
+                            <!-- Jumbo Heading -->
+                            <h2 class="text-2xl sm:text-4xl font-bold text-gray-800 leading-tight">
+                                Lelah mengunggah siswa satu per satu?
+                            </h2>
 
-                        <!-- Sub Text -->
-                        <p class="mt-2 text-gray-500 text-md">
-                            Upload dengan format CSV. Seperti pada contoh. <a href="#"
-                                class="text-indigo-600 hover:underline">Download here</a>.
-                        </p>
+                            <!-- Sub Text -->
+                            <p class="mt-2 text-gray-500 text-md">
+                                Upload dengan format CSV. Seperti pada contoh. <a href="#"
+                                    class="text-indigo-600 hover:underline">Download here</a>.
+                            </p>
 
-                        <!-- Big Import Button -->
-                        <div class="mt-2">
-                            <button
-                                id="uploader-button"
-                                class="w-full flex items-center gap-2 sm:w-auto bg-green-600 hover:bg-green-700 text-white font-bold text-lg px-8 py-4 rounded-xl shadow-md transition"
-                                type="button" onclick="openCSVpicker()">
-                                <svg
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <!-- Arrow pointing up -->
-                                    <path
-                                        d="M12 3L12 15"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path
-                                        d="M7 8L12 3L17 8"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round" />
+                            <!-- Big Import Button -->
+                            <div class="mt-2">
+                                <button
+                                    id="uploader-button"
+                                    class="w-full flex items-center gap-2 sm:w-auto bg-green-600 hover:bg-green-700 text-white font-bold text-lg px-8 py-4 rounded-xl shadow-md transition"
+                                    type="button" onclick="openCSVpicker()">
+                                    <svg
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <!-- Arrow pointing up -->
+                                        <path
+                                            d="M12 3L12 15"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                        <path
+                                            d="M7 8L12 3L17 8"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round" />
 
-                                    <!-- Bottom tray -->
-                                    <path
-                                        d="M5 15V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V15"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </svg>
-                                Import CSV
-                            </button>
+                                        <!-- Bottom tray -->
+                                        <path
+                                            d="M5 15V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V15"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                    Import CSV
+                                </button>
 
-                            <div id="loading-spinner" class="hidden flex items-center mt-2 gap-2">
-                                <div class="w-6 h-6 border-4 border-gray-300 border-t-indigo-600 border-b-indigo-600 rounded-full animate-spin"></div> Mengupload...
-                            </div>
+                                <div id="loading-spinner" class="hidden flex items-center mt-2 gap-2">
+                                    <div class="w-6 h-6 border-4 border-gray-300 border-t-indigo-600 border-b-indigo-600 rounded-full animate-spin"></div> Mengupload...
+                                </div>
 
 
-                            <div id="confirm-upload" class="hidden gap-3 items-center">
+                                <div id="confirm-upload" class="hidden gap-3 items-center">
 
-                                <!-- File name -->
-                                <span>Upload File ini? </span><span id="selected-filename" class="text-green-600 underline font-medium">Nama_file_excel.xlsx</span>
+                                    <!-- File name -->
+                                    <span>Upload File ini? </span><span id="selected-filename" class="text-green-600 underline font-medium">Nama_file_excel.xlsx</span>
 
-                                <!-- YES / NO merged button group -->
-                                <div class="overflow-hidden flex items-center rounded-full shadow-sm border border-gray-300 bg-white">
-                                    <!-- YES Button -->
-                                    <button
-                                        id="confirm-yes"
-                                        type="button"
-                                        onclick="confirmUpload()"
-                                        class="px-3 py-1 font-semibold transition text-gray-700 hover:bg-gray-100 active:scale-95">
-                                        YA
-                                    </button>
+                                    <!-- YES / NO merged button group -->
+                                    <div class="overflow-hidden flex items-center rounded-full shadow-sm border border-gray-300 bg-white">
+                                        <!-- YES Button -->
+                                        <button
+                                            id="confirm-yes"
+                                            type="button"
+                                            onclick="confirmUpload()"
+                                            class="px-3 py-1 font-semibold transition text-gray-700 hover:bg-gray-100 active:scale-95">
+                                            YA
+                                        </button>
 
-                                    <!-- NO Button -->
-                                    <button
-                                        id="confirm-no"
-                                        type="button"
-                                        onclick="cancelUpload()"
-                                        class="px-3 py-1 font-semibold transition border-l border-gray-300 text-gray-700 hover:bg-gray-100 active:scale-95">
-                                        TIDAK
-                                    </button>
+                                        <!-- NO Button -->
+                                        <button
+                                            id="confirm-no"
+                                            type="button"
+                                            onclick="cancelUpload()"
+                                            class="px-3 py-1 font-semibold transition border-l border-gray-300 text-gray-700 hover:bg-gray-100 active:scale-95">
+                                            TIDAK
+                                        </button>
+                                    </div>
+
                                 </div>
 
                             </div>
 
+                            <input type="file" name="excel" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" class="hidden" id="csv-bulk-upload" />
                         </div>
 
-                        <input type="file" name="excel" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" class="hidden" id="csv-bulk-upload" />
                     </div>
-
                 </div>
-                <?= form_close() ?>
             </div>
         </section>
 

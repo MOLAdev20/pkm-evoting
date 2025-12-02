@@ -22,8 +22,8 @@ $uri = service('uri');
         <!-- Menu -->
         <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto text-sm">
             <a
-                href="#"
-                class="flex items-center px-3 py-2 rounded-lg font-medium text-gray-900 <?= $uri->getSegment(2) == 'dashboard' ? 'bg-gray-100' : '' ?> hover:bg-gray-50 hover:text-gray-900">
+                href="<?= base_url("admin/dashboard") ?>"
+                class="flex items-center px-3 py-2 rounded-lg font-medium text-gray-900 <?= $uri->getSegment(2) == 'dashboard' ? 'bg-gray-100 border-l-4 border-indigo-500' : '' ?> hover:bg-gray-50 hover:text-gray-900">
                 <span class="mr-2">🏠</span>
                 <span>Dashboard</span>
             </a>
@@ -54,6 +54,14 @@ $uri = service('uri');
                 class="flex items-center px-3 py-2 rounded-lg font-medium text-gray-600 <?= $uri->getSegment(2) == 'participant' ? 'bg-gray-100 border-l-4 border-indigo-500' : '' ?> hover:bg-gray-50 hover:text-gray-900">
                 <span class="mr-2">👥</span>
                 <span>Daftar Siswa</span>
+            </a>
+
+            <a
+                href="<?= base_url('logout') ?>"
+                onclick="return confirm('Apakah anda yakin ingin keluar?')"
+                class="flex items-center px-3 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                <span class="mr-2">◀</span>
+                <span>Keluar</span>
             </a>
 
             <!-- Menu dengan Submenu -->

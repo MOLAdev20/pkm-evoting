@@ -88,16 +88,16 @@
                         ?>
                         <article
                             class="flex flex-col gap-2 rounded-2xl bg-gray-50/80 px-4 py-3
-                               border border-gray-100 hover:bg-white hover:border-indigo-100 hover:shadow-sm
+                               ring-2 ring-green-500 hover:bg-white hover:border-indigo-100 hover:shadow-sm
                                transition sm:flex-row sm:items-center sm:justify-between">
                             <!-- Kiri: nama election + status -->
                             <div class="gap-4">
                                 <div class="min-w-0">
                                     <div class="flex items-center gap-2">
                                         <a
-                                            href="<?= site_url('admin/election/candidate/' . $onGoing['id']) ?>"
-                                            class="font-semibold text-gray-900 hover:text-indigo-600 truncate">
-                                            <?= esc($onGoing['title'] ?? 'Tanpa nama') ?>
+                                            href="<?= site_url('admin/election/detail/' . $onGoing['id']) ?>"
+                                            class="font-semibold text-orange-500 hover:text-indigo-600 truncate">
+                                            🏁 <?= esc($onGoing['title'] ?? 'Tanpa nama') ?>
                                         </a>
                                     </div>
                                 </div>
@@ -123,7 +123,7 @@
                             <!-- Kanan: aksi -->
                             <div class="flex items-center justify-end gap-1.5 sm:ml-4">
                                 <a
-                                    href="<?= site_url('admin/election/candidate/' . $onGoing['id'] . '') ?>"
+                                    href="<?= site_url('admin/election/detail/' . $onGoing['id'] . '') ?>"
                                     class="inline-flex items-center rounded-full border border-gray-200 bg-white px-3 py-1.5 text-[11px] text-gray-700 hover:bg-gray-50">
                                     Detail
                                 </a>
@@ -131,8 +131,8 @@
                                 <?php if ($status === 'open'): ?>
                                     <!-- Tombol tutup pemilihan -->
                                     <a
-                                        href="<?= site_url('admin/election/switch/' . $onGoing['id'] . '?switch=closed') ?>"
-                                        onclick="return confirm('Tutup pemilihan ini? Peserta tidak bisa lagi memberikan suara.');">
+                                        href="javascript:void(0)"
+                                        onclick="changeStatus('<?= $onGoing['id'] ?>', 'closed')">
                                         <button
                                             type="button"
                                             class="inline-flex items-center rounded-full border border-red-100 bg-red-50 px-3 py-1.5 text-[11px] text-red-600 hover:bg-red-100">
@@ -142,8 +142,8 @@
                                 <?php elseif (in_array($status, ['draft', 'closed'], true)): ?>
                                     <!-- Tombol buka pemilihan -->
                                     <a
-                                        href="<?= site_url('admin/election/switch/' . $onGoing['id'] . '?switch=open') ?>"
-                                        onclick="return confirm('Buka pemilihan ini sekarang? Peserta dapat mulai memberikan suara.');">
+                                        href="javascript:void(0)"
+                                        onclick="changeStatus('<?= $onGoing['id'] ?>', 'open')">
                                         <button
                                             type="submit"
                                             class="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-[11px] text-emerald-700 hover:bg-emerald-100">
@@ -160,7 +160,12 @@
 
         <section class="bg-white rounded-2xl shadow-sm border border-gray-100">
             <div class="px-4 sm:px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-                <h2 class="text-sm font-semibold text-gray-900">Semua Data Pemilihan</h2>
+                <div>
+                    <h2 class="text-sm font-semibold text-gray-900">Semua Data Pemilihan</h2>
+                    <?php if (!empty($elections)): ?>
+                        <p class="text-xs mt-1">Tidak dapat merubah status, karena ada pemilihan sedang berlangsung.</p>
+                    <?php endif ?>
+                </div>
                 <p class="text-[11px] text-gray-500">
                     <?= esc($totalElections) ?> pemilihan terdaftar
                 </p>
@@ -209,7 +214,7 @@
                                     <div class="min-w-0">
                                         <div class="flex items-center gap-2">
                                             <a
-                                                href="<?= site_url('admin/election/candidate/' . $election['id']) ?>"
+                                                href="<?= site_url('admin/election/detail/' . $election['id']) ?>"
                                                 class="font-semibold text-gray-900 hover:text-indigo-600 truncate">
                                                 <?= esc($election['title'] ?? 'Tanpa nama') ?>
                                             </a>
@@ -237,16 +242,23 @@
                                 <!-- Kanan: aksi -->
                                 <div class="flex items-center justify-end gap-1.5 sm:ml-4">
                                     <a
-                                        href="<?= site_url('admin/election/candidate/' . $election['id'] . '') ?>"
+                                        href="<?= site_url('admin/election/detail/' . $election['id'] . '') ?>"
                                         class="inline-flex items-center rounded-full border border-gray-200 bg-white px-3 py-1.5 text-[11px] text-gray-700 hover:bg-gray-50">
                                         Detail
                                     </a>
 
-                                    <?php if ($status === 'open'): ?>
+                                    <?php if (!empty($onGoing)): ?>
+                                        <!-- Tombol disabled -->
+                                        <a href="javascript:void(0)" class="pointer-events-none opacity-50">
+                                            <button type="button" class="inline-flex items-center rounded-full border border-slate-300 bg-slate-100 px-3 py-1.5 text-[11px] text-gray-600">
+                                                🚫 Buka pemilihan
+                                            </button>
+                                        </a>
+                                    <?php elseif ($status === 'open'): ?>
                                         <!-- Tombol tutup pemilihan -->
                                         <a
-                                            href="<?= site_url('admin/election/switch/' . $election['id'] . '?switch=closed') ?>"
-                                            onclick="return confirm('Tutup pemilihan ini? Peserta tidak bisa lagi memberikan suara.');">
+                                            href="javascript:void(0)"
+                                            onclick="changeStatus('<?= $election['id'] ?>', 'closed')">
                                             <button
                                                 type="button"
                                                 class="inline-flex items-center rounded-full border border-red-100 bg-red-50 px-3 py-1.5 text-[11px] text-red-600 hover:bg-red-100">
@@ -256,8 +268,8 @@
                                     <?php elseif (in_array($status, ['draft', 'closed'], true)): ?>
                                         <!-- Tombol buka pemilihan -->
                                         <a
-                                            href="<?= site_url('admin/election/switch/' . $election['id'] . '?switch=open') ?>"
-                                            onclick="return confirm('Buka pemilihan ini sekarang? Peserta dapat mulai memberikan suara.');">
+                                            href="javascript:void(0)"
+                                            onclick="changeStatus('<?= $election['id'] ?>', 'open')">
                                             <button
                                                 type="submit"
                                                 class="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-[11px] text-emerald-700 hover:bg-emerald-100">
@@ -359,6 +371,8 @@
 <?php $this->section('script') ?>
 <?= session()->getFlashdata('msg') ?>
 <script>
+    const base_url = "<?= base_url() ?>";
+
     $(function() {
         // Modal logic – sama pola dengan template yang lu kirim
         function openModal() {
@@ -402,5 +416,30 @@
             }
         });
     });
+
+    function changeStatus(election_id, status) {
+
+        let title = "Buka Pemilihan?";
+        let text = "Pemilihan ini akan dibuka. Siswa dapat memilih";
+
+        if (status == 'closed') {
+            title = "Tutup Pemilihan?";
+            text = "Pemilihan ini akan ditutup. Siswa tidak dapat memilih";
+        }
+
+        Swal.fire({
+            title,
+            text,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Lanjutkan!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.replace(`${base_url}/admin/election/switch/${election_id}?switch=${status}`)
+            }
+        })
+    }
 </script>
 <?php $this->endSection() ?>

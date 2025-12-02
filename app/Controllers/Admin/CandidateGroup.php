@@ -7,17 +7,23 @@ use CodeIgniter\HTTP\ResponseInterface;
 
 use App\Models\MCandidateGroup;
 use App\Models\MCandidate;
+use App\Models\MElection;
+use App\Models\MVotingRecords;
 
 
 class CandidateGroup extends BaseController
 {
     protected $candidate;
     protected $candidateGroup;
+    protected $election;
+    protected $votingRecord;
 
     public function __construct()
     {
         $this->candidate = new MCandidate();
         $this->candidateGroup = new MCandidateGroup();
+        $this->election = new MElection();
+        $this->votingRecord = new MVotingRecords();
     }
     public function index()
     {
@@ -58,6 +64,9 @@ class CandidateGroup extends BaseController
             ],
             'mission' => [
                 'rules' => 'required|min_length[2]',
+            ],
+            'election-id' => [
+                'rules' => 'required|numeric',
             ]
         ];
 
@@ -71,6 +80,7 @@ class CandidateGroup extends BaseController
         $data = [
             "cp_id" => $req['cp-id'],
             "vcp_id" => $req['vcp-id'],
+            "election_id" => $req['election-id'],
             "alias" => $req['alias'],
             "vision" => $req['vision'],
             "mission" => $req['mission']
@@ -79,5 +89,40 @@ class CandidateGroup extends BaseController
         $this->candidateGroup->insert($data);
 
         return redirect()->to('/admin/candidate-group')->with('success', 'Data berhasil disimpan');
+    }
+
+    public function delete($id)
+    {
+        // Dapatkan candidateGroup
+        $cg = $this->candidateGroup->find($id);
+
+        if (empty($cg)) {
+            // throw 404
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            exit;
+        }
+
+        // Dapatkan election
+        $election = $this->election->find($cg["election_id"]);
+
+        // cek apakah pemilihan sedang berlangsung?
+        if ($election["status"] == "open") {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Pemilihan sedang berlangsung',
+            ]);
+        }
+
+        // cek apakah voting record 0?
+        $votingRecordCount = $this->votingRecord->where("group_id", $id)->countAllResults();
+        if ($votingRecordCount >= 0) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'paslon sudah ada yang memilih',
+            ]);
+        }
+
+        // Hapus paslon
+        $this->candidateGroup->delete($id);
     }
 }

@@ -47,25 +47,17 @@ class Election extends BaseController
         return redirect()->to("admin/election")->with('msg', "<script>Swal.fire('Berhasil', 'Pemilihan berhasil disimpan', 'success')</script>");
     }
 
-    public function getCandidateGroup($id)
+    public function detail($id)
     {
+        $data["election"] = $this->election->find($id);
+        $data["otherOnGoing"] = $this->election->where("status", "open")->where("id <>", $id)->first();
         $data["candidate"] = $this->candidate->select('id, nis, name, photo')->findAll();
 
-        $data["candidateGroup"] = $this->candidateGroup->select([
-            "candidate_group.id",
-            "alias",
-            "vision",
-            "mission",
-            "election_id",
-            "cp.name as chairperson",
-            "vcp.name as vice_chairperson",
-            "cp.photo as cp_photo",
-            "vcp.photo as vcp_photo"
-        ])
-            ->where("candidate_group.election_id", $id)
-            ->join("candidate cp", "candidate_group.cp_id = cp.id")->join("candidate vcp", "candidate_group.vcp_id = vcp.id")->findAll();
+        $data["candidateGroup"] = $this->candidateGroup->getLiveVoteWithCG($data["election"]["id"]);
 
-        return view("admin/candidate_group/V_Candidate_Group", $data);
+        // return $this->response->setJSON($data["otherOnGoing"]);
+
+        return view("admin/election/V_Detail", $data);
     }
 
     public function switchStatus($id)

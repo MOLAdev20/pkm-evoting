@@ -30,6 +30,58 @@ class Participant extends BaseController
         return view("admin/participant/V_Create_Participant");
     }
 
+    public function store()
+    {
+        $validation = \Config\Services::validation();
+
+        $rules = [
+            'nisn' => [
+                'rules' => 'required|numeric|min_length[5]|max_length[20]',
+            ],
+            'name' => [
+                'rules' => 'required|min_length[3]|max_length[100]',
+            ],
+            'gender' => [
+                'rules' => 'required|in_list[l,p]',
+            ],
+            'class' => [
+                'rules' => 'required|min_length[3]|max_length[64]',
+            ],
+            'username' => [
+                'rules' => 'required|min_length[2]|max_length[64]',
+            ],
+            'password' => [
+                'rules' => 'required|min_length[8]|max_length[64]',
+            ]
+        ];
+
+        if (! $this->validate($rules)) {
+            // Jika gagal → redirect back dengan flashdata
+            if (! $this->validate($rules)) {
+                return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+            }
+        }
+
+        /** -----------------------------------
+         * INPUT DATA LAINNYA
+         * -----------------------------------*/
+        $data = [
+            'nisn'   => $this->request->getPost('nisn'),
+            'name' => $this->request->getPost('name'),
+            'gender'    => $this->request->getPost('gender'),
+            'class'     => $this->request->getPost('class'),
+            'username'      => $this->request->getPost('username'),
+            'password'      => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+            'created_at'        => date("Y-m-d H:i:s"),
+            'updated_at'  => date("Y-m-d H:i:s"),
+        ];
+
+        $this->participant->insert($data);
+
+        return redirect()->to('admin/participant/new')
+            ->with('success', "<script>swal.fire('Selamat!', 'Siswa berhasil ditambahkan!', 'success')</script>");
+    }
+
     public function import()
     {
         $file = $this->request->getFile('excel');

@@ -21,6 +21,11 @@ class Auth extends BaseController
         return view('participant/V_Login');
     }
 
+    public function loginAdministrator()
+    {
+        return view('admin/V_Login');
+    }
+
     public function processParticipant()
     {
         $req = $this->request->getPost();
@@ -42,8 +47,27 @@ class Auth extends BaseController
         return redirect()->to("election");
     }
 
+    public function processAdministrator()
+    {
+        $req = $this->request->getPost();
+
+        if ($req["username"] != "admin" && $req["password"] != "admin") {
+            return redirect()->to("login/administrator")->with('msg', "<script>Swal.fire('Kata Sandi Salah', 'Harap coba lagi', 'error')</script>");
+        }
+
+        session()->set([
+            "login-admin" => true
+        ]);
+
+        return redirect()->to("admin/dashboard");
+    }
+
     public function logout()
     {
+        if (session()->get("login-admin")) {
+            session()->destroy();
+            return redirect()->to("login/administrator");
+        }
         session()->destroy();
         return redirect()->to("login/participant");
     }

@@ -16,6 +16,7 @@ class MVotingRecords extends Model
         'id',
         'group_id',
         'participant_id',
+        'election_id',
         'created_at',
     ];
 }

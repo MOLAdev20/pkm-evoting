@@ -86,16 +86,19 @@
         <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
 
-                <div class="flex items-center gap-2">
+                <form method="GET" action="" class="flex items-center gap-2">
                     <input
                         type="text"
+                        name="find"
+                        value="<?= $find ?>"
                         class="w-full sm:w-48 rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         placeholder="Cari kandidat..." />
                     <button
+                        type="submit"
                         class="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium border border-gray-300 text-gray-700 hover:bg-gray-50 active:bg-gray-100 active:scale-95">
                         🔍
                     </button>
-                </div>
+                </form>
                 <a href="<?= base_url('admin/candidate/new') ?>" class="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 active:bg-indigo-800 active:scale-95 transition duration-150">➕ Tambah Kandidat</a>
             </div>
 
@@ -142,32 +145,8 @@
             </div>
 
             <!-- Pagination -->
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-4">
-                <p class="text-xs text-gray-500">
-                    Menampilkan <span class="font-semibold text-gray-700">1–3</span> dari <span class="font-semibold text-gray-700">3</span> kandidat
-                </p>
-                <div class="inline-flex items-center space-x-1 text-xs">
-                    <button
-                        class="px-2 py-1 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
-                        ‹ Sebelumnya
-                    </button>
-                    <button
-                        class="px-2.5 py-1 rounded-lg border border-gray-900 bg-gray-900 text-white">
-                        1
-                    </button>
-                    <button
-                        class="px-2.5 py-1 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
-                        2
-                    </button>
-                    <button
-                        class="px-2.5 py-1 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
-                        3
-                    </button>
-                    <button
-                        class="px-2 py-1 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
-                        Berikutnya ›
-                    </button>
-                </div>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 mt-4">
+                <?= $pager->links('default', 'admin_table'); ?>
             </div>
         </section>
     </div>

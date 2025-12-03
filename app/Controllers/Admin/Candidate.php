@@ -17,10 +17,20 @@ class Candidate extends BaseController
 
     public function index()
     {
-        $candidate = $this->candidate->findAll();
+        $perPage = 30;
+
+        if ($this->request->getGet("find")) {
+            $find = $this->request->getGet("find");
+            $this->candidate->like("name", $find)->orLike("nis", $find)->orLike("class", $find);
+        }
+
+
+        $data["candidate"] = $this->candidate->paginate($perPage);
+        $data["pager"] = $this->candidate->pager;
+        $data["find"] = $this->request->getGet("find") ?? "";
 
         // return $this->response->setJSON($candidate);
-        return view("admin/candidate/V_Candidate", ["candidate" => $candidate]);
+        return view("admin/candidate/V_Candidate", $data);
     }
 
     public function new()

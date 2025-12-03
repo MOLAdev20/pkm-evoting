@@ -39,8 +39,8 @@
             </div>
             <div class="flex flex-wrap items-center gap-2">
                 <button
-                    id="openModal"
                     type="button"
+                    data-modal-target="#addElectionModal"
                     class="inline-flex items-center px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     ➕ Tambah Pemilihan
                 </button>
@@ -295,16 +295,12 @@
 
 <?php $this->section('modal') ?>
 <!-- Modal: Tambah Pemilihan Baru (menggunakan mekanisme modal existing: #modal, #modalPanel, #openModal, dll) -->
-<div
-    id="modal"
-    class="fixed inset-0 z-40 flex items-center justify-center px-4 py-6 bg-black bg-opacity-40 opacity-0 pointer-events-none transition-opacity duration-200">
-    <div
-        id="modalPanel"
-        class="bg-white max-w-lg w-full rounded-2xl shadow-xl transform scale-95 transition-transform duration-200">
+<div data-modal id="addElectionModal" class="fixed inset-0 z-40 flex items-center justify-center px-4 py-6 bg-black bg-opacity-40 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div data-modal-panel class="bg-white max-w-3xl w-full rounded-2xl shadow-xl transform scale-95 transition-transform duration-200">
         <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
             <h3 class="text-base font-semibold text-gray-900">Buat Pemilihan Baru</h3>
             <button
-                id="modalClose"
+                data-modal-dismiss
                 type="button"
                 class="p-1.5 rounded-full hover:bg-gray-100 text-gray-500">
                 ✖
@@ -353,7 +349,7 @@
         <div class="pt-3 mt-3 border-t border-gray-100 flex items-center justify-end space-x-2">
             <button
                 type="button"
-                id="modalCancel"
+                data-modal-dismiss
                 class="px-3 py-2 rounded-lg text-sm font-medium border border-gray-300 text-gray-700 hover:bg-gray-50">
                 Batal
             </button>

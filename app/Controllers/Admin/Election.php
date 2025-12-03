@@ -57,7 +57,7 @@ class Election extends BaseController
 
         // return $this->response->setJSON($data["otherOnGoing"]);
 
-        return view("admin/election/V_Detail", $data);
+        return view("admin/election/V_Detail_Election", $data);
     }
 
     public function switchStatus($id)
@@ -65,5 +65,19 @@ class Election extends BaseController
         $status = $this->request->getGet("switch");
         $this->election->update($id, ["status" => $status]);
         return redirect()->to("admin/election")->with('msg', "<script>Swal.fire('Status Dirubah', 'Status pemilihan berhasil dirubah', 'success')</script>");
+    }
+
+    public function update($id)
+    {
+        $req = $this->request->getPost();
+
+        $this->election->set([
+            "title" => $req["election-title"],
+            "start_at" => $req["election-start-at"],
+            "end_at" => $req["election-end-at"],
+            "updated_at" => date("Y-m-d H:i:s")
+        ])->where(["id" => $id])->update();
+
+        return redirect()->to("admin/election/detail/{$id}")->with('msg', "<script>Swal.fire('Edit Berhasil', 'Pemilihan berhasil diedit', 'success')</script>");
     }
 }

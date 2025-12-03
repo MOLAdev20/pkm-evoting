@@ -93,7 +93,8 @@ if ($totalVoters && $totalVoters > 0 && $totalVoted !== null) {
                 <?php endif; ?>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <a href="<?= site_url('election/edit/' . ($election['id'] ?? '')) ?>"
+                    <a href="javascript:void(0)"
+                        data-modal-target="#editElectionModal"
                         class="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium border border-indigo-500 text-indigo-600 hover:bg-indigo-50">
                         ✏️ Edit Pemilihan
                     </a>
@@ -232,7 +233,7 @@ if ($totalVoters && $totalVoters > 0 && $totalVoted !== null) {
                         <?php else: ?>
                             <button
                                 type="button"
-                                id="openModal"
+                                data-modal-target="#addCandidateGroupModal"
                                 class="px-4 py-2 rounded-lg cursor-block text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 active:outline-none active:ring-2 active:ring-indigo-700">
                                 Tambah Paslon
                             </button>
@@ -345,12 +346,12 @@ if ($totalVoters && $totalVoters > 0 && $totalVoted !== null) {
 
 
 <?php $this->section("modal") ?>
-<div id="modal" class="fixed inset-0 z-40 flex items-center justify-center px-4 py-6 bg-black bg-opacity-40 opacity-0 pointer-events-none transition-opacity duration-200">
-    <div id="modalPanel" class="bg-white max-w-3xl w-full rounded-2xl shadow-xl transform scale-95 transition-transform duration-200">
+<div data-modal id="addCandidateGroupModal" class="fixed inset-0 z-40 flex items-center justify-center px-4 py-6 bg-black bg-opacity-40 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div data-modal-panel class="bg-white max-w-3xl w-full rounded-2xl shadow-xl transform scale-95 transition-transform duration-200">
         <?= form_open("admin/candidate-group/store") ?>
         <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
             <h3 class="text-base font-semibold text-gray-900">Buat Paslon Baru</h3>
-            <button id="modalClose" type="button" class="p-1.5 rounded-full hover:bg-gray-100 text-gray-500">
+            <button data-modal-dismiss type="button" class="p-1.5 rounded-full hover:bg-gray-100 text-gray-500">
                 ✖
             </button>
         </div>
@@ -498,6 +499,84 @@ if ($totalVoters && $totalVoters > 0 && $totalVoted !== null) {
     </div>
 </div>
 
+<!-- Edit Pemilihan -->
+<div data-modal id="editElectionModal" class="fixed inset-0 z-40 flex items-center justify-center px-4 py-6 bg-black bg-opacity-40 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div data-modal-panel class="bg-white max-w-3xl w-full rounded-2xl shadow-xl transform scale-95 transition-transform duration-200">
+        <?= form_open("admin/election/update/{$election['id']}") ?>
+        <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h3 class="text-base font-semibold text-gray-900">Edit Pemilihan</h3>
+            <button
+                type="button"
+                data-modal-dismiss
+                class="p-1.5 rounded-full hover:bg-gray-100 text-gray-500">
+                ✖
+            </button>
+        </div>
+
+        <div class="px-5 py-4 space-y-4 text-sm">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1" for="election-title">
+                    Nama Pemilihan
+                </label>
+                <input
+                    id="election-title"
+                    name="election-title"
+                    type="text"
+                    required
+                    value="<?= $election['title'] ?>"
+                    placeholder="Pemilihan OSIS 2025/2026"
+                    class="block w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="start_at">
+                        Tanggal Mulai
+                    </label>
+                    <input
+                        id="start_at"
+                        name="election-start-at"
+                        type="datetime-local"
+                        required
+                        value="<?= $election['start_at'] ?>"
+                        class="block w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="end_at">
+                        Tanggal Selesai
+                    </label>
+                    <input
+                        id="end_at"
+                        name="election-end-at"
+                        type="datetime-local"
+                        required
+                        value="<?= $election['end_at'] ?>"
+                        class="block w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+                </div>
+                <div>
+                    <span class="text-xs text-gray-400">Terakhir diperbarui pada <?= date('d F Y H:i', strtotime($election['updated_at'])) ?></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-5 py-4 border-t border-gray-100 flex items-center justify-end space-x-2">
+            <button
+                type="button"
+                data-modal-dismiss
+                class="px-3 py-2 rounded-lg text-sm font-medium border border-gray-300 text-gray-700 hover:bg-gray-50">
+                Batal
+            </button>
+            <input type="hidden" name="election-id" value="<?= $election['id'] ?>">
+            <button
+                type="submit"
+                class="px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                Simpan
+            </button>
+        </div>
+        <?= form_close() ?>
+    </div>
+</div>
+
 <?php $this->endSection() ?>
 
 <?php $this->section("script") ?>
@@ -509,6 +588,8 @@ if ($totalVoters && $totalVoters > 0 && $totalVoted !== null) {
         })
     </script>
 <?php endif ?>
+
+<?= session()->getFlashdata("msg") ?>
 
 <script>
     const base_url = "<?= base_url() ?>";

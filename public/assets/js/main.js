@@ -36,30 +36,48 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Modal
-  const modal = document.getElementById("modal");
-  const modalPanel = document.getElementById("modalPanel");
-  const openModalBtn = document.getElementById("openModal");
-  const closeModalBtn = document.getElementById("modalClose");
-  const cancelModalBtn = document.getElementById("modalCancel");
+  function openModal(modal) {
+    const panel = modal.querySelector("[data-modal-panel]");
 
-  function openModal() {
     modal.classList.remove("opacity-0", "pointer-events-none");
-    modalPanel.classList.remove("scale-95");
-    modalPanel.classList.add("scale-100");
+    if (panel) {
+      panel.classList.remove("scale-95");
+      panel.classList.add("scale-100");
+    }
   }
 
-  function closeModal() {
+  function closeModal(modal) {
+    const panel = modal.querySelector("[data-modal-panel]");
+
     modal.classList.add("opacity-0", "pointer-events-none");
-    modalPanel.classList.remove("scale-100");
-    modalPanel.classList.add("scale-95");
+    if (panel) {
+      panel.classList.remove("scale-100");
+      panel.classList.add("scale-95");
+    }
   }
 
-  openModalBtn?.addEventListener("click", openModal);
-  [closeModalBtn, cancelModalBtn].forEach((el) => {
-    el?.addEventListener("click", closeModal);
-  });
+  document.addEventListener("click", (e) => {
+    // 1) Buka modal
+    const openBtn = e.target.closest("[data-modal-target]");
+    if (openBtn) {
+      const selector = openBtn.getAttribute("data-modal-target"); // contoh: "#editElectionModal"
+      const modal = document.querySelector(selector);
+      if (modal) openModal(modal);
+      return;
+    }
 
-  modal?.addEventListener("click", (e) => {
-    if (e.target === modal) closeModal();
+    // 2) Tutup modal lewat tombol dalam modal
+    const closeBtn = e.target.closest("[data-modal-dismiss]");
+    if (closeBtn) {
+      const modal = closeBtn.closest("[data-modal]");
+      if (modal) closeModal(modal);
+      return;
+    }
+
+    // 3) Klik backdrop (area gelap)
+    if (e.target.matches("[data-modal]")) {
+      closeModal(e.target);
+      return;
+    }
   });
 });

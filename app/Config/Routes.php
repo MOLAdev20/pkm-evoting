@@ -18,6 +18,7 @@ $routes->group("admin", ["filter" => "admin-auth"], function ($admin) {
         $election->get("switch/(:num)", "Admin\Election::switchStatus/$1");
         $election->post('store', 'Admin\Election::store');
         $election->get("detail/(:num)", "Admin\Election::detail/$1");
+        $election->post("update/(:num)", "Admin\Election::update/$1");
     });
 
     $admin->group("candidate", function ($candidate) {

@@ -124,4 +124,25 @@ class Candidate extends BaseController
         return redirect()->to('admin/candidate/new')
             ->with('success', "<script>swal.fire('Selamat!', 'Kandidat berhasil ditambahkan!', 'success')</script>");
     }
+
+    public function delete($id)
+    {
+        // Dapatkan data kandidatnya
+        $candidate = $this->candidate->find($id);
+
+        if (empty($candidate)) {
+            // throw 404
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            exit;
+        }
+
+        // Hapus foto
+        if (file_exists('uploads/candidates/' . $candidate['photo'])) {
+            unlink('uploads/candidates/' . $candidate['photo']);
+        }
+
+        $this->candidate->delete($id);
+
+        return redirect()->to('admin/candidate')->with('success', "<script>swal.fire('Berhasil Dihapus', 'Kandidat berhasil dihapus!', 'success')</script>");
+    }
 }

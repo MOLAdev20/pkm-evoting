@@ -25,6 +25,7 @@ $routes->group("admin", ["filter" => "admin-auth"], function ($admin) {
         $candidate->get("/", "Admin\Candidate::index");
         $candidate->get("new", "Admin\Candidate::new");
         $candidate->post("store", "Admin\Candidate::store");
+        $candidate->get("delete/(:num)", "Admin\Candidate::delete/$1");
     });
 
     $admin->group("candidate-group", function ($team) {
@@ -35,9 +36,15 @@ $routes->group("admin", ["filter" => "admin-auth"], function ($admin) {
 
     $admin->group("participant", function ($participant) {
         $participant->get("/", "Admin\Participant::index");
+        $participant->get("detail/(:num)", "Admin\Participant::detail/$1");
+        $participant->get("change-status/(:num)", "Admin\Participant::changeStatus/$1");
+
         $participant->get("new", "Admin\Participant::new");
         $participant->post("store", "Admin\Participant::store");
+        $participant->post("update/(:num)", "Admin\Participant::update/$1");
         $participant->post("import", "Admin\Participant::import");
+
+        $participant->post("deactivated-entry-year", "Admin\Participant::deactivatedEntryYear");
     });
 });
 

@@ -33,9 +33,25 @@ class Election extends BaseController
 
         if (!empty($userHasVote)) {
 
-            $data["candidateGroup"] = $this->candidateGroup->find($userHasVote["candidate_group_id"]);
+            $data["candidateGroup"] = $this->candidateGroup->select([
+                "alias",
+                "cp.name as chairperson",
+                "vcp.name as vice_chairperson",
+                "cp.photo as cp_photo",
+                "vcp.photo as vcp_photo",
+                "voting_records.created_at"
+            ])
+                ->where("candidate_group.id", $userHasVote["group_id"])
+                ->join("candidate cp", "candidate_group.cp_id = cp.id")
+                ->join("candidate vcp", "candidate_group.vcp_id = vcp.id")
+                ->join("voting_records", "voting_records.group_id = candidate_group.id")
+                ->first();
 
-            return view('election/V_Success_Submit');
+            $data["electionTitle"] = $this->election->select("title")->where("id", $userHasVote["election_id"])->first()["title"];
+
+
+
+            return view('election/V_Success_Submit', $data);
         } else {
 
             // cek apakah pemilihan masih berlangsung?

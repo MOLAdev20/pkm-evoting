@@ -65,8 +65,8 @@ class MCandidateGroup extends Model
             ])
             ->join('election e', "e.id = cg.election_id AND e.id = {$electionId}", 'inner')
             ->join("({$subQuery}) AS vr", 'vr.group_id = cg.id AND vr.election_id = cg.election_id', 'left')
-            ->join('candidate cp', 'cg.cp_id = cp.id', 'inner')
-            ->join('candidate vcp', 'cg.vcp_id = vcp.id', 'inner')
+            ->join('candidate cp', 'cg.cp_id = cp.id', 'left')
+            ->join('candidate vcp', 'cg.vcp_id = vcp.id', 'left')
             ->get()->getResultArray();
     }
 }

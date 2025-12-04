@@ -30,10 +30,6 @@ $electionStatusClass = 'bg-gray-100 text-gray-700';
 
 if ($activeElection) {
     switch ($activeElection['status']) {
-        case 'draft':
-            $electionStatusLabel = 'Persiapan';
-            $electionStatusClass = 'bg-yellow-50 text-yellow-700';
-            break;
         case 'open':
             $electionStatusLabel = 'Sedang Berlangsung';
             $electionStatusClass = 'bg-emerald-50 text-emerald-700';
@@ -68,7 +64,6 @@ if ($activeElection) {
             <div class="flex flex-wrap items-center gap-3 justify-between sm:justify-end">
                 <!-- Status Election -->
                 <div class="text-right space-y-1">
-                    <p class="text-xs text-gray-500">Status Pemilihan</p>
                     <span class="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium <?= $electionStatusClass ?>">
                         <span class="h-1.5 w-1.5 rounded-full bg-current"></span>
                         <?= esc($electionStatusLabel) ?>
@@ -102,9 +97,9 @@ if ($activeElection) {
                     <div>
                         <p class="text-xs text-gray-500">Total Siswa</p>
                         <p class="mt-1 text-2xl font-semibold text-gray-900">
-                            <?= number_format($totalStudents, 0, ',', '.') ?>
+                            <?= number_format($totalParticipant, 0, ',', '.') ?>
                         </p>
-                        <p class="mt-1 text-[11px] text-gray-400">Pemilih terdaftar</p>
+                        <p class="mt-1 text-[11px] text-gray-400">Siswa aktif & terdaftar</p>
                     </div>
                     <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-lg">
                         👥
@@ -209,13 +204,13 @@ if ($activeElection) {
                                 class="rounded-xl border border-slate-100 p-3 hover:bg-slate-50 transition"
                                 data-candidate-id="<?= esc($id) ?>">
                                 <div class="mb-1 flex items-center justify-between text-sm">
-                                    <div class="flex items-center gap-2">
-                                        <span class="inline-flex items-center justify-center h-6 w-6 rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">
+                                    <div class="gap-2">
+                                        <div class="inline-flex items-center justify-center rounded-full text-[11px] font-semibold text-slate-700">
                                             <?= esc($alias) ?>
-                                        </span>
-                                        <span class="text-gray-800">
+                                        </div>
+                                        <div class="text-gray-800">
                                             <?= esc($c['chairperson'] . ' & ' . $c['vice_chairperson']) ?>
-                                        </span>
+                                        </div>
                                     </div>
                                     <div class="text-right">
                                         <p class="tabular-nums text-sm font-semibold" data-role="votes">

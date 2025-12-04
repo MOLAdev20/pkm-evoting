@@ -38,7 +38,7 @@ class CandidateGroup extends BaseController
             "vcp.name as vice_chairperson",
             "cp.photo as cp_photo",
             "vcp.photo as vcp_photo"
-        ])->join("candidate cp", "candidate_group.cp_id = cp.id")->join("candidate vcp", "candidate_group.vcp_id = vcp.id")->findAll();
+        ])->join("candidate cp", "candidate_group.cp_id = cp.id", "left")->join("candidate vcp", "candidate_group.vcp_id = vcp.id", "left")->findAll();
 
         return view("admin/candidate_group/V_Candidate_Group", $data);
     }

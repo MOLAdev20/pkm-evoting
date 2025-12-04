@@ -63,81 +63,73 @@ if ($totalVoters && $totalVoters > 0 && $totalVoted !== null) {
                     <span class="text-gray-900 font-medium">Detail Pemilihan</span>
                 </div>
             </div>
-
-            <div class="flex flex-wrap items-center gap-3 justify-between sm:justify-end">
-
-                <?php if (!empty($otherOnGoing)): ?>
-                    <div class="text-right">
-                        <a href="javascript:void(0)"
-                            onclick="Swal.fire('Tidak Dapat Dilakukan', 'Ada pemilihan yang sedang berlangsung', 'warning')"
-                            class="inline-flex items-center px-3 py-2 rounded-lg ring-1 text-sm font-medium border bg-gray-50 text-gray-400 ring-gray-300 hover:bg-gray-100">
-                            🚫 Buka Pemilihan
-                        </a>
-                    </div>
-                <?php elseif ($status === 'closed' || $status === 'draft'): ?>
-                    <div class="text-right">
-                        <a href="javascript:void(0)"
-                            onclick="changeStatus('<?= $election['id'] ?>', 'open')"
-                            class="inline-flex items-center px-3 py-2 rounded-lg ring-1 text-sm font-medium border bg-emerald-50 text-emerald-700 ring-emerald-300 hover:bg-emerald-100">
-                            Buka Pemilihan
-                        </a>
-                    </div>
-                <?php else: ?>
-                    <div class="text-right">
-                        <a href="javascript:void(0)"
-                            onclick="changeStatus('<?= $election['id'] ?>', 'closed')"
-                            class="inline-flex items-center px-3 py-2 rounded-lg ring-1 text-sm font-medium border bg-red-50 text-red-700 ring-red-300 hover:bg-red-100">
-                            🚫 Tutup Pemilihan
-                        </a>
-                    </div>
-                <?php endif; ?>
-
-                <div class="flex flex-wrap items-center gap-2">
-                    <a href="javascript:void(0)"
-                        data-modal-target="#editElectionModal"
-                        class="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium border border-indigo-500 text-indigo-600 hover:bg-indigo-50">
-                        ✏️ Edit Pemilihan
-                    </a>
-                </div>
-            </div>
         </div>
 
         <!-- Data Show -->
         <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
             <div class="space-y-6">
 
-                <!-- Informasi Pemilihan -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-2 space-y-3">
+                <div class="flex justify-between">
+                    <div>
+                        <p class="text-[11px] uppercase tracking-wide text-gray-400 mb-1">
+                            Deskripsi
+                        </p>
 
                         <?php if ($status === 'open'): ?>
-                            <div>
-                                <span href="javascript:void(0)"
-                                    class="inline-flex items-center px-2 py-1 rounded-lg ring-1 text-sm font-medium border bg-green-50 text-green-700 ring-green-300 hover:bg-green-100">
-                                    🚩 Pemilihan ini sedang berlangsung
-                                </span>
+                            <p class="text-green-700 font-medium leading-relaxed">
+                                🟢 Pemilihan ini sedang berlangsung
+                            </p>
+                        <?php else: ?>
+                            <p class="text-red-700 font-medium leading-relaxed">
+                                🔴 Pemilihan ini sedang tidak aktif
+                            </p>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-3 justify-between sm:justify-end">
+
+                        <?php if (!empty($otherOnGoing)): ?>
+                            <div class="text-right">
+                                <a href="javascript:void(0)"
+                                    onclick="Swal.fire('Tidak Dapat Dilakukan', 'Ada pemilihan yang sedang berlangsung', 'warning')"
+                                    class="inline-flex items-center px-3 py-2 rounded-lg ring-1 text-sm font-medium border bg-gray-50 text-gray-400 ring-gray-300 hover:bg-gray-100">
+                                    🚫 Buka Pemilihan
+                                </a>
+                            </div>
+                        <?php elseif ($status === 'closed' || $status === 'draft'): ?>
+                            <div class="text-right">
+                                <a href="javascript:void(0)"
+                                    onclick="changeStatus('<?= $election['id'] ?>', 'open')"
+                                    class="inline-flex items-center px-3 py-2 rounded-lg ring-1 text-sm font-medium border bg-emerald-50 text-emerald-700 ring-emerald-300 hover:bg-emerald-100">
+                                    Buka Pemilihan
+                                </a>
                             </div>
                         <?php else: ?>
-                            <div>
+                            <div class="text-right">
                                 <a href="javascript:void(0)"
-                                    class="inline-flex items-center px-2 py-1 rounded-lg ring-1 text-sm font-medium border bg-red-50 text-red-700 ring-red-300 hover:bg-red-100">
-                                    🚫 Pemilihan ini tidak aktif
+                                    onclick="changeStatus('<?= $election['id'] ?>', 'closed')"
+                                    class="inline-flex items-center px-3 py-2 rounded-lg ring-1 text-sm font-medium border bg-red-50 text-red-700 ring-red-300 hover:bg-red-100">
+                                    🚫 Tutup Pemilihan
                                 </a>
                             </div>
                         <?php endif; ?>
 
+                        <div class="flex flex-wrap items-center gap-2">
+                            <a href="javascript:void(0)"
+                                data-modal-target="#editElectionModal"
+                                class="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium border border-indigo-500 text-indigo-600 hover:bg-indigo-50">
+                                ✏️ Edit Pemilihan
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informasi Pemilihan -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-3 space-y-3">
+
                         <div class="space-y-3">
 
-                            <?php if ($electionDesc): ?>
-                                <div>
-                                    <p class="text-[11px] uppercase tracking-wide text-gray-400 mb-1">
-                                        Deskripsi
-                                    </p>
-                                    <p class="text-sm text-gray-700 leading-relaxed">
-                                        <?= nl2br(esc($electionDesc)) ?>
-                                    </p>
-                                </div>
-                            <?php endif; ?>
 
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div class="rounded-xl border border-dashed border-gray-200 p-3">
@@ -157,59 +149,6 @@ if ($totalVoters && $totalVoters > 0 && $totalVoted !== null) {
                                     </p>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Ringkasan Angka -->
-                    <div class="space-y-3">
-                        <h2 class="text-sm font-semibold text-gray-900">
-                            Ringkasan
-                        </h2>
-                        <div class="space-y-3">
-                            <div class="rounded-2xl border border-gray-100 bg-slate-50 p-3">
-                                <p class="text-[11px] uppercase tracking-wide text-gray-400 mb-1">
-                                    Total Paslon
-                                </p>
-                                <p class="text-xl font-semibold text-gray-900">
-                                    <?= number_format($totalCandidates, 0, ',', '.') ?>
-                                </p>
-                            </div>
-
-                            <div class="rounded-2xl border border-gray-100 bg-slate-50 p-3">
-                                <p class="text-[11px] uppercase tracking-wide text-gray-400 mb-1">
-                                    Statistik Pemilih
-                                </p>
-                                <div class="space-y-1.5">
-                                    <p class="text-xs text-gray-600 flex justify-between">
-                                        <span>Terdaftar</span>
-                                        <span class="font-medium">
-                                            <?= $totalVoters !== null ? number_format($totalVoters, 0, ',', '.') : '-' ?>
-                                        </span>
-                                    </p>
-                                    <p class="text-xs text-gray-600 flex justify-between">
-                                        <span>Sudah memilih</span>
-                                        <span class="font-medium">
-                                            <?= $totalVoted !== null ? number_format($totalVoted, 0, ',', '.') : '-' ?>
-                                        </span>
-                                    </p>
-                                    <?php if ($totalVoters && $totalVoted !== null): ?>
-                                        <div class="mt-2">
-                                            <div class="flex justify-between text-[11px] text-gray-500 mb-1">
-                                                <span>Partisipasi</span>
-                                                <span><?= $participationPct ?>%</span>
-                                            </div>
-                                            <div class="w-full h-1.5 rounded-full bg-gray-100 overflow-hidden">
-                                                <div class="h-1.5 bg-emerald-500 rounded-full" style="width: <?= $participationPct ?>%;"></div>
-                                            </div>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-
-                            <a href="<?= site_url('election/live/' . ($election['id'] ?? '')) ?>"
-                                class="inline-flex items-center justify-center w-full rounded-xl border border-indigo-500 text-indigo-600 text-sm font-medium px-3 py-2 hover:bg-indigo-50">
-                                📊 Lihat Live Result Publik
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -618,7 +557,7 @@ if ($totalVoters && $totalVoters > 0 && $totalVoted !== null) {
             if (filtered.length === 0) {
                 const emptyItem = document.createElement('li');
                 emptyItem.className = 'px-3 py-2 text-xs text-gray-400';
-                emptyItem.textContent = 'Tidak ada kandidat yang cocok.';
+                emptyItem.innerHTML = "Tidak ada kandidat yang cocok. <a target='_blank' href='<?= base_url("/admin/candidate/new") ?>' class='text-indigo-600'>Tambah kandidat baru</a>";
                 listEl.appendChild(emptyItem);
                 return;
             }

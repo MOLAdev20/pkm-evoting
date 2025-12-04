@@ -22,7 +22,8 @@ class Home extends BaseController
         $electionStatus = $this->election->where("status", "open")->first();
 
         if ($electionStatus == 0) {
-            return view('election/V_Election_Closed');
+            $data["candidateGroup"] = [];
+            return view('public', $data);
         }
 
         $data["candidateGroup"] = $this->candidateGroup->select([

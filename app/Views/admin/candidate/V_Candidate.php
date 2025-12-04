@@ -2,6 +2,7 @@
 
 <?php $this->section('header') ?>
 <title>Daftar Kandidat | Admin OSIS</title>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <?php $this->endSection() ?>
 
 <?php $this->section('content') ?>
@@ -103,52 +104,81 @@
             </div>
 
             <div class="overflow-x-auto">
-                <table class="min-w-full text-sm">
-                    <thead>
-                        <tr class="border-b border-gray-200 bg-gray-50">
-                            <th class="px-3 py-2 text-left font-semibold text-gray-600">Foto</th>
-                            <th class="px-3 py-2 text-left font-semibold text-gray-600">NISN</th>
-                            <th class="px-3 py-2 text-left font-semibold text-gray-600">Nama</th>
-                            <th class="px-3 py-2 text-left font-semibold text-gray-600">Tanggal Lahir</th>
-                            <th class="px-3 py-2 text-left font-semibold text-gray-600">Kelas</th>
-                            <th class="px-3 py-2 text-left font-semibold text-gray-600">Status</th>
-                            <th class="px-3 py-2 text-center font-semibold text-gray-600">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($candidate as $cand) : ?>
-                            <tr class="border-b border-gray-100 hover:bg-gray-50">
-                                <td class="px-3 py-2">
-                                    <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-                                        <img src="<?= base_url('uploads/candidates/' . $cand['photo']) ?>" alt="avatar" class="w-10 h-10 object-cover rounded-full">
-                                    </div>
-                                </td>
-                                <td class="px-3 py-2"><?= $cand['nis'] ?></td>
-                                <td class="px-3 py-2 font-medium text-black"><?= $cand['name'] ?></td>
-                                <td class="px-3 py-2"><?= $cand['birth_date'] ?></td>
-                                <td class="px-3 py-2"><?= $cand['class'] ?></td>
-                                <td class="px-3 py-2">
-                                    <?php if ($cand['is_active']) : ?>
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-green-50 text-green-700">Aktif</span>
-                                    <?php else: ?>
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-red-50 text-red-700">Tidak Aktif</span>
-                                    <?php endif ?>
-                                </td>
-                                <td class="px-3 py-2 text-center space-x-1.5">
-                                    <button class="px-2 py-1 rounded-lg bg-gray-100 text-xs hover:bg-gray-200">Detail</button>
-                                    <button class="px-2 py-1 rounded-lg bg-indigo-50 text-xs text-indigo-700 hover:bg-indigo-100">Edit</button>
-                                </td>
+                <?php if (empty($candidate)) : ?>
+                    <div class="bg-white rounded-2xl shadow-sm p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-xs text-gray-500">Belum Ada Kandidat</p>
+                            </div>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <table class="min-w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-200 bg-gray-50">
+                                <th class="px-3 py-2 text-left font-semibold text-gray-600">Foto</th>
+                                <th class="px-3 py-2 text-left font-semibold text-gray-600">NISN</th>
+                                <th class="px-3 py-2 text-left font-semibold text-gray-600">Nama</th>
+                                <th class="px-3 py-2 text-left font-semibold text-gray-600">Tanggal Lahir</th>
+                                <th class="px-3 py-2 text-left font-semibold text-gray-600">Kelas</th>
+                                <th class="px-3 py-2 text-left font-semibold text-gray-600">Status</th>
+                                <th class="px-3 py-2 text-center font-semibold text-gray-600">Aksi</th>
                             </tr>
-                        <?php endforeach ?>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Pagination -->
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 mt-4">
-                <?= $pager->links('default', 'admin_table'); ?>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($candidate as $cand) : ?>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                    <td class="px-3 py-2">
+                                        <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                                            <img src="<?= base_url('uploads/candidates/' . $cand['photo']) ?>" alt="avatar" class="w-10 h-10 object-cover rounded-full">
+                                        </div>
+                                    </td>
+                                    <td class="px-3 py-2"><?= $cand['nis'] ?></td>
+                                    <td class="px-3 py-2 font-medium text-black"><?= $cand['name'] ?></td>
+                                    <td class="px-3 py-2"><?= $cand['birth_date'] ?></td>
+                                    <td class="px-3 py-2"><?= $cand['class'] ?></td>
+                                    <td class="px-3 py-2">
+                                        <?php if ($cand['is_active']) : ?>
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-green-50 text-green-700">Aktif</span>
+                                        <?php else: ?>
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-red-50 text-red-700">Tidak Aktif</span>
+                                        <?php endif ?>
+                                    </td>
+                                    <td class="px-3 py-2 text-center space-x-1.5">
+                                        <button class="px-2 py-1 rounded-lg bg-gray-100 text-xs hover:bg-gray-200">Detail</button>
+                                        <button type="button" onclick="deleteCandidate(<?= $cand['id'] ?>)" class="px-2 py-1 rounded-lg bg-red-50 text-xs text-red-700 hover:bg-red-100">Hapus</button>
+                                    </td>
+                                </tr>
+                            <?php endforeach ?>
+                        </tbody>
+                    </table>
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 mt-4">
+                        <?= $pager->links('default', 'admin_table'); ?>
+                    </div>
+                <?php endif ?>
             </div>
         </section>
     </div>
 </main>
 <?php $this->endSection() ?>
+
+<?= $this->section("script") ?>
+<script>
+    function deleteCandidate(id) {
+        Swal.fire({
+            title: 'Hapus Kandidat?',
+            text: "Anda yakin ingin menghapus kandidat ini?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/admin/candidate/delete/' + id;
+            }
+        })
+    }
+</script>
+<?= $this->endSection() ?>

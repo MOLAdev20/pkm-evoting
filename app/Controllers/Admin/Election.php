@@ -64,7 +64,7 @@ class Election extends BaseController
     {
         $status = $this->request->getGet("switch");
         $this->election->update($id, ["status" => $status]);
-        return redirect()->to("admin/election")->with('msg', "<script>Swal.fire('Status Dirubah', 'Status pemilihan berhasil dirubah', 'success')</script>");
+        return redirect()->to("admin/election/detail/{$id}")->with('msg', "<script>Swal.fire('Status Dirubah', 'Status pemilihan berhasil dirubah', 'success')</script>");
     }
 
     public function update($id)

@@ -79,7 +79,7 @@
                             Terima kasih sudah memilih! 🎉
                         </h2>
                         <p class="text-sm text-slate-600">
-                            Suaramu untuk pemilihan <span class="font-medium">Ketua & Wakil OSIS Periode 2025/2026</span>
+                            Suaramu untuk <span class="font-medium"><?= $electionTitle ?></span>
                             sudah tercatat dengan baik.
                         </p>
                     </div>
@@ -94,21 +94,18 @@
                                 <dt class="text-slate-500">Pilihanmu</dt>
                                 <dd class="font-medium text-slate-900">
                                     <!-- Ganti teks ini dari backend -->
-                                    No. XX — Nama Paslon
+                                    <?= $candidateGroup["alias"] ?>
+                                </dd>
+                                <dd class="mt-0.5 text-[11px] text-slate-500">
+                                    <!-- Ganti teks ini dari backend -->
+                                    <?= $candidateGroup["chairperson"] ?> & <?= $candidateGroup["vice_chairperson"] ?>
                                 </dd>
                             </div>
                             <div class="space-y-0.5">
                                 <dt class="text-slate-500">Waktu terekam</dt>
                                 <dd class="font-medium text-slate-900">
                                     <!-- Ganti dinamis: misalnya 30 Nov 2025, 10.32 WIB -->
-                                    {{ waktu_submit }}
-                                </dd>
-                            </div>
-                            <div class="space-y-0.5">
-                                <dt class="text-slate-500">ID bukti (opsional)</dt>
-                                <dd class="font-mono text-[11px] text-slate-700 break-all">
-                                    <!-- Bisa diisi token / kode referensi -->
-                                    {{ vote_receipt }}
+                                    <?= date("j F Y, H:i", strtotime($candidateGroup["created_at"])) ?>
                                 </dd>
                             </div>
                             <div class="space-y-0.5">
